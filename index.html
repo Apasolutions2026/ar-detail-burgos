@@ -1,0 +1,739 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AR Detail Burgos</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="AR Detail: detailing y limpieza de coches en Burgos. Limpieza interior y exterior, tapicerías, faros, llantas, tratamiento cerámico y limpieza de sofás y colchones a domicilio. Reserva tu cita online.">
+<meta property="og:title" content="AR Detail Burgos · Detailing de coches en Burgos">
+<meta property="og:description" content="Limpieza interior y exterior, faros, tapicerías y tratamiento cerámico. Reserva tu cita online.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Maven+Pro:wght@600;800;900&family=Mulish:wght@400;600;700&family=Rosarivo:ital@1&display=swap">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"AutoWash","name":"AR Detail","description":"Detailing y limpieza de vehículos, tapicerías, sofás y colchones en Burgos.","telephone":"+34642152011","email":"ar.detail.burgos@gmail.com","address":{"@type":"PostalAddress","streetAddress":"Calle Alfoz de Bricia 18, Nave 13","addressLocality":"Burgos","postalCode":"09001","addressCountry":"ES"},"geo":{"@type":"GeoCoordinates","latitude":42.3652503,"longitude":-3.7005609},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"09:00","closes":"18:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"10:00","closes":"14:00"}],"priceRange":"€€","sameAs":["https://www.instagram.com/ar_detail.burgos/","https://www.tiktok.com/@ar_detail.burgos"]}
+</script>
+<style>
+/* Layout: estudio de detailing de noche — techo de luz hexagonal en la portada, bloques oscuros que se alternan, rojo solo en botones y precios */
+:root{
+  --negro:#0A0A0B;
+  --carbon:#131315;
+  --carbon-2:#1B1B1E;
+  --linea:rgba(255,255,255,.10);
+  --blanco:#F5F5F6;
+  --texto:#D6D6D9;
+  --suave:#9B9BA3;
+  --rojo:#E3172B;
+  --rojo-claro:#FF4152;
+  --rojo-osc:#A50E1C;
+  --cromo:linear-gradient(180deg,#FFFFFF 0%,#C9CBD0 48%,#7E8189 52%,#E7E8EB 100%);
+  --grad:linear-gradient(135deg,#FF4152 0%,#C3101F 100%);
+  --f-display:"Maven Pro",system-ui,"Segoe UI",Arial,sans-serif;
+  --f-texto:"Mulish",system-ui,"Segoe UI",Arial,sans-serif;
+  --f-serif:"Rosarivo",Georgia,"Times New Roman",serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+body{background:var(--negro);color:var(--texto);font-family:var(--f-texto);font-size:16px;line-height:1.6;margin:0}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--negro)}
+a{color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-display);color:var(--blanco);text-transform:uppercase;letter-spacing:.01em;line-height:1.05;margin:0;text-wrap:balance}
+h2{font-size:clamp(30px,6vw,48px);font-weight:900}
+.kicker{font-family:var(--f-serif);font-style:italic;color:var(--suave);font-size:17px;margin:0 0 6px}
+.lead{max-width:60ch;margin:14px 0 0}
+section{padding-block:72px}
+section.alt{background:var(--carbon)}
+:focus-visible{outline:2px solid var(--rojo-claro);outline-offset:3px}
+
+/* Botones */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--f-display);font-weight:800;font-size:14px;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;border-radius:999px;padding:14px 24px;border:0;cursor:pointer;color:var(--blanco);transition:transform .15s,box-shadow .15s,background .15s}
+.btn-rojo{background:var(--grad);box-shadow:0 8px 26px -8px rgba(227,23,43,.75)}
+.btn-rojo:hover{transform:translateY(-1px);box-shadow:0 12px 30px -8px rgba(227,23,43,.9)}
+.btn-linea{background:transparent;border:1px solid rgba(255,255,255,.28)}
+.btn-linea:hover{border-color:var(--blanco)}
+.btn svg{width:18px;height:18px;flex:none}
+
+/* Cabecera */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(10,10,11,.86);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--linea)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;height:64px}
+.marca{display:flex;flex-direction:column;line-height:1;text-decoration:none}
+.marca b{font-family:var(--f-display);font-weight:900;font-size:22px;letter-spacing:.04em;background:var(--cromo);-webkit-background-clip:text;background-clip:text;color:transparent}
+.marca b i{font-style:normal;color:var(--rojo);-webkit-text-fill-color:var(--rojo)}
+.marca span{font-family:var(--f-display);font-weight:600;font-size:9px;letter-spacing:.42em;color:var(--suave);margin-top:3px}
+.top nav{display:flex;gap:22px;font-size:14px;font-weight:600}
+.top nav a{text-decoration:none;color:var(--texto)}
+.top nav a:hover{color:var(--blanco)}
+.top .btn{padding:10px 18px;font-size:12px}
+@media (max-width:820px){.top nav{display:none}}
+
+/* Portada */
+.hero{position:relative;overflow:hidden;padding-block:0;background:var(--negro)}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,11,.15) 0%,rgba(10,10,11,.55) 55%,var(--negro) 100%);pointer-events:none}
+.hero .wrap{position:relative;z-index:1;padding-block:110px 72px;text-align:center}
+.pill{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--linea);background:rgba(19,19,21,.7);border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;color:var(--texto)}
+.pill i{width:8px;height:8px;border-radius:50%;background:var(--rojo);box-shadow:0 0 0 4px rgba(227,23,43,.25)}
+.hero h1{font-size:clamp(40px,9vw,92px);font-weight:900;margin-top:22px}
+.hero h1 .cromo{background:var(--cromo);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero h1 .rojo{color:var(--rojo)}
+.hero p.sub{max-width:54ch;margin:18px auto 0;font-size:17px;color:var(--texto)}
+.ctas{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:30px}
+.datos-hero{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 22px;margin-top:28px;font-size:14px;color:var(--suave)}
+.datos-hero b{color:var(--blanco);font-weight:700}
+
+/* Nosotros */
+.nos{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center}
+.nos > div{min-width:0}
+.puntos{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.punto{background:var(--carbon-2);border:1px solid var(--linea);border-radius:14px;padding:18px}
+.punto svg{width:26px;height:26px;color:var(--rojo-claro)}
+.punto h3{font-size:15px;margin-top:10px;letter-spacing:.04em}
+.punto p{margin:6px 0 0;font-size:14px;color:var(--suave);line-height:1.5}
+@media (max-width:820px){.nos{grid-template-columns:1fr;gap:32px}}
+
+/* Servicios */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:28px}
+.tab{font-family:var(--f-display);font-weight:800;font-size:13px;letter-spacing:.05em;text-transform:uppercase;padding:10px 16px;border-radius:999px;border:1px solid var(--linea);background:transparent;color:var(--texto);cursor:pointer}
+.tab[aria-selected="true"]{background:var(--blanco);color:var(--negro);border-color:var(--blanco)}
+.panel{margin-top:26px}
+.planes{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.plan{position:relative;background:var(--carbon-2);border:1px solid var(--linea);border-radius:16px;padding:24px;display:flex;flex-direction:column}
+.plan.destacado{border-color:rgba(227,23,43,.6);box-shadow:0 0 0 1px rgba(227,23,43,.35),0 20px 40px -24px rgba(227,23,43,.6)}
+.plan .etq{position:absolute;top:-11px;left:24px;background:var(--grad);color:var(--blanco);font-family:var(--f-display);font-weight:800;font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:999px}
+.plan h3{font-size:20px}
+.precio{display:flex;align-items:baseline;gap:6px;margin-top:12px;font-variant-numeric:tabular-nums}
+.precio small{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--suave);font-weight:700}
+.precio b{font-family:var(--f-display);font-weight:900;font-size:40px;color:var(--blanco);line-height:1}
+.precio em{font-style:normal;color:var(--rojo-claro);font-weight:700}
+.plan ul{list-style:none;padding:0;margin:18px 0 22px;display:grid;gap:7px;font-size:15px}
+.plan li{display:flex;gap:10px;align-items:flex-start}
+.plan li::before{content:"";flex:none;width:14px;height:14px;margin-top:5px;border-radius:50%;background:radial-gradient(circle,var(--rojo) 0 3px,transparent 4px),rgba(227,23,43,.18)}
+.plan .nota{font-size:13px;color:var(--suave);margin:-8px 0 18px}
+.plan .btn{margin-top:auto}
+@media (max-width:900px){.planes{grid-template-columns:1fr}}
+
+.tarifa{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.grupo{background:var(--carbon-2);border:1px solid var(--linea);border-radius:16px;padding:22px}
+.grupo h3{font-size:16px;letter-spacing:.06em;margin-bottom:10px}
+.fila{display:flex;align-items:baseline;gap:10px;padding:7px 0;font-size:15px}
+.fila span{min-width:0}
+.fila::after{content:none}
+.fila .dots{flex:1;border-bottom:1px dotted rgba(255,255,255,.18);transform:translateY(-4px)}
+.fila b{color:var(--blanco);font-variant-numeric:tabular-nums;white-space:nowrap}
+.fila b small{color:var(--suave);font-weight:600;font-size:12px;margin-right:4px}
+.aviso{margin-top:18px;font-size:14px;color:var(--suave);display:flex;gap:10px;align-items:flex-start}
+.aviso svg{width:18px;height:18px;flex:none;margin-top:3px;color:var(--rojo-claro)}
+@media (max-width:820px){.tarifa{grid-template-columns:1fr}}
+
+.garaje{display:grid;grid-template-columns:1.2fr .8fr;gap:24px;align-items:center;background:var(--carbon-2);border:1px solid var(--linea);border-radius:16px;padding:28px}
+.garaje ul{list-style:none;padding:0;margin:16px 0 0;display:grid;gap:8px}
+.garaje li{display:flex;gap:10px}
+.garaje li svg{width:20px;height:20px;color:var(--rojo-claro);flex:none;margin-top:2px}
+.garaje .cta-g{display:flex;flex-direction:column;gap:10px}
+@media (max-width:820px){.garaje{grid-template-columns:1fr}}
+
+/* Trabajos */
+.trabajos{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:30px}
+.trabajo{position:relative;display:flex;flex-direction:column;justify-content:flex-end;min-height:220px;border-radius:16px;overflow:hidden;text-decoration:none;border:1px solid var(--linea);padding:18px;background:var(--carbon-2)}
+.trabajo::before{content:"";position:absolute;inset:0;background:radial-gradient(120% 80% at 80% 0%,rgba(227,23,43,.28),transparent 60%),repeating-linear-gradient(115deg,rgba(255,255,255,.035) 0 2px,transparent 2px 14px);transition:opacity .2s}
+.trabajo:hover{border-color:rgba(255,255,255,.3)}
+.trabajo > *{position:relative}
+.trabajo .tipo{font-family:var(--f-display);font-weight:800;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--rojo-claro)}
+.trabajo h3{font-size:19px;margin-top:6px}
+.trabajo p{margin:6px 0 0;font-size:14px;color:var(--suave);line-height:1.45}
+.trabajo .ver{margin-top:12px;font-size:13px;font-weight:700;color:var(--blanco);display:inline-flex;gap:6px;align-items:center}
+@media (max-width:900px){.trabajos{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:480px){.trabajos{grid-template-columns:1fr}.trabajo{min-height:170px}}
+
+/* Reseñas */
+.resena{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;background:var(--carbon-2);border:1px solid var(--linea);border-radius:20px;padding:32px}
+.estrellas{display:flex;gap:4px;color:#FFC83D;margin-bottom:12px}
+.estrellas svg{width:24px;height:24px}
+@media (max-width:720px){.resena{grid-template-columns:1fr}}
+
+/* Contacto */
+.contacto{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.contacto > div{min-width:0}
+.horario{margin-top:22px;border:1px solid var(--linea);border-radius:16px;overflow:hidden}
+.horario .d{display:flex;justify-content:space-between;gap:12px;padding:12px 18px;border-bottom:1px solid var(--linea);font-variant-numeric:tabular-nums}
+.horario .d:last-child{border-bottom:0}
+.horario .d.hoy{background:rgba(227,23,43,.12)}
+.horario .d.hoy span::after{content:"Hoy";margin-left:8px;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--rojo-claro)}
+.horario .cerrado{color:var(--suave)}
+.dl{display:grid;gap:18px;margin-top:22px}
+.dl dt{font-family:var(--f-display);font-weight:800;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--rojo-claro)}
+.dl dd{margin:4px 0 0;color:var(--blanco)}
+.dl dd a{text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(255,255,255,.35)}
+.mapa{display:flex;flex-direction:column;justify-content:flex-end;gap:10px;min-height:240px;margin-top:22px;border-radius:16px;padding:20px;text-decoration:none;border:1px solid var(--linea);background:radial-gradient(circle at 62% 42%,var(--rojo) 0 7px,rgba(227,23,43,.28) 8px 20px,transparent 21px),linear-gradient(30deg,transparent 47%,rgba(255,255,255,.08) 48% 52%,transparent 53%),linear-gradient(-58deg,transparent 46%,rgba(255,255,255,.06) 47% 50%,transparent 51%),repeating-linear-gradient(0deg,rgba(255,255,255,.03) 0 1px,transparent 1px 28px),repeating-linear-gradient(90deg,rgba(255,255,255,.03) 0 1px,transparent 1px 28px),var(--carbon-2)}
+.mapa b{color:var(--blanco);font-family:var(--f-display);text-transform:uppercase;letter-spacing:.04em}
+@media (max-width:820px){.contacto{grid-template-columns:1fr}}
+
+footer{border-top:1px solid var(--linea);padding-block:28px 96px;font-size:14px;color:var(--suave)}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
+footer .apa{text-decoration:none;color:var(--texto)}
+footer .apa b{font-family:var(--f-display);font-weight:900;color:var(--blanco)}
+
+/* Botón flotante móvil */
+.flota{position:fixed;left:0;right:0;bottom:0;z-index:40;padding:12px max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));background:linear-gradient(180deg,transparent,rgba(10,10,11,.92) 35%);display:none}
+.flota .btn{width:100%}
+@media (max-width:820px){.flota{display:block}}
+
+/* Modal de reserva */
+dialog{width:min(560px,calc(100% - 24px));max-height:calc(100dvh - 24px);padding:0;border:1px solid var(--linea);border-radius:20px;background:var(--carbon);color:var(--texto)}
+dialog::backdrop{background:rgba(0,0,0,.7);backdrop-filter:blur(4px)}
+.modal{display:flex;flex-direction:column;max-height:calc(100dvh - 26px)}
+.modal header{display:flex;justify-content:space-between;align-items:center;padding:18px 20px 8px}
+.modal header h3{font-size:20px}
+.cerrar{width:36px;height:36px;border-radius:50%;border:1px solid var(--linea);background:transparent;color:var(--blanco);font-size:22px;line-height:1;cursor:pointer}
+.pasos{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:4px 20px 0}
+.pasos i{height:4px;border-radius:4px;background:var(--linea)}
+.pasos i.on{background:var(--grad)}
+.paso-t{padding:14px 20px 0;font-family:var(--f-display);font-weight:800;text-transform:uppercase;color:var(--blanco);letter-spacing:.04em;font-size:15px}
+.paso-t small{display:block;font-family:var(--f-texto);text-transform:none;font-weight:600;color:var(--suave);letter-spacing:0;font-size:13px;margin-top:2px}
+.cuerpo{overflow:auto;padding:12px 20px 16px;flex:1}
+.cat{font-family:var(--f-display);font-weight:800;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--suave);margin:14px 0 8px}
+.cat:first-child{margin-top:2px}
+.opc{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:12px 14px;margin-bottom:8px;border-radius:12px;border:1px solid var(--linea);background:var(--carbon-2);color:var(--texto);font:inherit;font-size:15px;cursor:pointer}
+.opc .chk{flex:none;width:20px;height:20px;border-radius:6px;border:1.5px solid rgba(255,255,255,.35);display:grid;place-items:center}
+.opc .n{flex:1;min-width:0}
+.opc .p{color:var(--blanco);font-weight:700;white-space:nowrap;font-size:14px}
+.opc[aria-pressed="true"]{border-color:var(--rojo);background:rgba(227,23,43,.1)}
+.opc[aria-pressed="true"] .chk{background:var(--rojo);border-color:var(--rojo)}
+.opc[aria-pressed="true"] .chk::after{content:"";width:9px;height:5px;border:2px solid #fff;border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}
+.dias{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.dia,.hora{padding:10px 4px;border-radius:12px;border:1px solid var(--linea);background:var(--carbon-2);color:var(--texto);font:inherit;cursor:pointer;text-align:center;font-variant-numeric:tabular-nums}
+.dia small{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--suave)}
+.dia b{display:block;font-family:var(--f-display);font-size:22px;color:var(--blanco);line-height:1.1}
+.dia span{display:block;font-size:11px;color:var(--suave)}
+.dia:disabled{opacity:.35;cursor:not-allowed}
+.dia[aria-pressed="true"],.hora[aria-pressed="true"]{border-color:var(--rojo);background:rgba(227,23,43,.14)}
+.horas{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.hora{font-weight:700;color:var(--blanco)}
+.campo{display:grid;gap:6px;margin-bottom:12px}
+.campo label{font-size:13px;font-weight:700;color:var(--blanco)}
+.campo input,.campo textarea{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--linea);background:var(--carbon-2);color:var(--blanco);font:inherit;font-size:16px}
+.campo textarea{min-height:76px;resize:vertical}
+.campo input:focus,.campo textarea:focus{outline:2px solid var(--rojo);outline-offset:0;border-color:transparent}
+.resumen{display:grid;gap:8px;background:var(--carbon-2);border:1px solid var(--linea);border-radius:14px;padding:16px;font-size:15px}
+.resumen div{display:flex;justify-content:space-between;gap:16px}
+.resumen dt{color:var(--suave)}
+.resumen dd{margin:0;color:var(--blanco);font-weight:700;text-align:right}
+.err{color:var(--rojo-claro);font-size:14px;margin:8px 0 0;min-height:1.2em}
+.nav-modal{display:flex;gap:10px;justify-content:space-between;padding:14px 20px calc(16px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--linea)}
+.nav-modal .btn{flex:1;padding:13px 16px}
+.selec{font-size:13px;color:var(--suave);padding:0 20px}
+.ok{text-align:center;padding:18px 0 6px}
+.ok svg{width:54px;height:54px;color:var(--rojo-claro)}
+.ok p{margin:10px auto 0;max-width:40ch}
+@media (max-width:420px){.dias,.horas{grid-template-columns:repeat(3,1fr)}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2c0 1.3 1 2.6 1.1 2.8.1.2 1.9 2.9 4.6 4.1 1.7.7 2.4.8 3.2.7.5-.1 1.5-.6 1.8-1.2.2-.6.2-1.1.1-1.2l-.5-.3Z"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M7 3v3M17 3v3M4 9h16M5 5h14a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"/></symbol>
+  <symbol id="i-tel" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 11v6M12 7.5v.01"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m5 12 4.5 4.5L19 7"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path fill="currentColor" d="m12 2.8 2.8 5.8 6.3.9-4.6 4.4 1.1 6.3L12 17.2l-5.6 3 1.1-6.3L2.9 9.5l6.3-.9L12 2.8Z"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></symbol>
+</svg>
+
+<header class="top">
+  <div class="wrap">
+    <a class="marca" href="#inicio" aria-label="AR Detail Burgos, inicio"><b>A<i>R</i> DETAIL</b><span>BURGOS</span></a>
+    <nav aria-label="Principal">
+      <a href="#nosotros">Nosotros</a>
+      <a href="#servicios">Servicios y precios</a>
+      <a href="#trabajos">Trabajos</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <button class="btn btn-rojo js-reservar" type="button">Reservar</button>
+  </div>
+</header>
+
+<section class="hero" id="inicio" aria-label="Inicio">
+  <canvas id="hex" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <span class="pill"><i></i>Detailing en Burgos · C/ Alfoz de Bricia</span>
+    <h1><span class="cromo">Tu coche,</span><br><span class="rojo">como el primer día</span></h1>
+    <p class="sub">Limpieza interior y exterior, tapicerías, faros, llantas y tratamiento cerámico. Cuidamos cada detalle para que tu coche vuelva a brillar.</p>
+    <div class="ctas">
+      <button class="btn btn-rojo js-reservar" type="button"><svg><use href="#i-cal"/></svg>Reservar cita</button>
+      <a class="btn btn-linea" href="#servicios">Ver servicios y precios</a>
+    </div>
+    <div class="datos-hero">
+      <span>Limpieza desde <b>70 €</b></span>
+      <span>Lunes a sábado</span>
+      <span>WhatsApp <b>642 15 20 11</b></span>
+    </div>
+  </div>
+</section>
+
+<section id="nosotros">
+  <div class="wrap nos">
+    <div>
+      <p class="kicker">Sobre nosotros</p>
+      <h2>Más que un lavado, un detalle</h2>
+      <p class="lead">En AR Detail cada coche recibe la atención que merece. Abrimos nuestra nave en Burgos en noviembre de 2026 con una idea clara: que tu coche luzca impecable, recupere su brillo y quede protegido.</p>
+      <p class="lead">Además de coches, limpiamos sofás, colchones, sillas y alfombras a domicilio, y tenemos plazas de garaje para guardar tu vehículo.</p>
+    </div>
+    <div class="puntos">
+      <div class="punto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 13l2-5a2 2 0 0 1 2-1h10a2 2 0 0 1 2 1l2 5v4a1 1 0 0 1-1 1h-1a2 2 0 0 1-4 0H9a2 2 0 0 1-4 0H4a1 1 0 0 1-1-1v-4ZM3 13h18"/></svg><h3>Interior y exterior</h3><p>Del salpicadero a las llantas, sin dejar rincón.</p></div>
+      <div class="punto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5L12 3Z"/></svg><h3>Acabados impecables</h3><p>Cera de protección y tratamiento cerámico.</p></div>
+      <div class="punto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 18v-6a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v6M2 14h3v4H2zM19 14h3v4h-3zM6 18h12"/></svg><h3>Tapicerías y sofás</h3><p>Fuera manchas, suciedad y malos olores.</p></div>
+      <div class="punto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 10l9-6 9 6v10H3V10ZM7 20v-6h10v6"/></svg><h3>Guarda tu coche</h3><p>Plazas amplias y seguras en nuestra nave.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="servicios">
+  <div class="wrap">
+    <p class="kicker">Servicios y precios</p>
+    <h2>Elige tu limpieza</h2>
+    <p class="lead">Precios orientativos: el final depende del tamaño y el estado del vehículo. Reserva en un minuto y te confirmamos por WhatsApp.</p>
+
+    <div class="tabs" role="tablist" aria-label="Tipos de servicio">
+      <button class="tab" role="tab" id="t-coche" aria-controls="p-coche" aria-selected="true">Tu coche</button>
+      <button class="tab" role="tab" id="t-extra" aria-controls="p-extra" aria-selected="false" tabindex="-1">Extras</button>
+      <button class="tab" role="tab" id="t-hogar" aria-controls="p-hogar" aria-selected="false" tabindex="-1">Sofás y colchones</button>
+      <button class="tab" role="tab" id="t-garaje" aria-controls="p-garaje" aria-selected="false" tabindex="-1">Guardar tu coche</button>
+    </div>
+
+    <div class="panel" role="tabpanel" id="p-coche" aria-labelledby="t-coche">
+      <div class="planes">
+        <article class="plan">
+          <h3>Limpieza básica</h3>
+          <div class="precio"><small>Desde</small><b>70</b><em>€</em></div>
+          <ul><li>Lavado en seco</li><li>Aspirado de alfombras</li><li>Limpieza de cristales</li><li>Limpieza de llantas</li><li>Limpieza de salpicadero</li><li>Acondicionado de plásticos</li><li>Perfumado</li></ul>
+          <button class="btn btn-linea js-reservar" data-srv="basica" type="button">Reservar básica</button>
+        </article>
+        <article class="plan destacado">
+          <span class="etq">La más completa</span>
+          <h3>Limpieza premium</h3>
+          <div class="precio"><small>Desde</small><b>120</b><em>€</em></div>
+          <ul><li>Todo lo de la básica</li><li>Limpieza de maletero</li><li>Limpieza de plásticos</li><li>Limpieza de asientos</li></ul>
+          <button class="btn btn-rojo js-reservar" data-srv="premium" type="button">Reservar premium</button>
+        </article>
+        <article class="plan">
+          <h3>Limpieza delicada</h3>
+          <div class="precio"><small>Desde</small><b>180</b><em>€</em></div>
+          <ul><li>Todo lo de la premium</li><li>Cera de protección</li><li>Detallado a fondo</li></ul>
+          <p class="nota">Limpiamos el coche al detalle: limpiadores, embellecedores, juntas y cada rincón.</p>
+          <button class="btn btn-linea js-reservar" data-srv="delicada" type="button">Reservar delicada</button>
+        </article>
+      </div>
+    </div>
+
+    <div class="panel" role="tabpanel" id="p-extra" aria-labelledby="t-extra" hidden>
+      <div class="planes">
+        <article class="plan">
+          <h3>Restaurado de faros</h3>
+          <div class="precio"><small>Desde</small><b>50</b><em>€ la pareja</em></div>
+          <ul><li>Pulido de faros amarillentos u opacos</li><li>Más luz y mejor aspecto</li></ul>
+          <button class="btn btn-linea js-reservar" data-srv="faros" type="button">Reservar</button>
+        </article>
+        <article class="plan">
+          <h3>Tratamiento cerámico</h3>
+          <div class="precio"><small>Desde</small><b>320</b><em>€</em></div>
+          <ul><li>Brillo profundo en la pintura</li><li>Protección duradera</li></ul>
+          <button class="btn btn-linea js-reservar" data-srv="ceramico" type="button">Reservar</button>
+        </article>
+        <article class="plan">
+          <h3>Limpieza de asientos</h3>
+          <div class="precio"><small>Desde</small><b>25</b><em>€ / asiento</em></div>
+          <ul><li>Limpieza profunda de tapicería</li><li>Fuera manchas y suciedad acumulada</li></ul>
+          <button class="btn btn-linea js-reservar" data-srv="asientos" type="button">Reservar</button>
+        </article>
+      </div>
+    </div>
+
+    <div class="panel" role="tabpanel" id="p-hogar" aria-labelledby="t-hogar" hidden>
+      <div class="tarifa">
+        <div class="grupo"><h3>Sofás y tapicerías</h3>
+          <div class="fila"><span>Sillón o butaca</span><i class="dots"></i><b>40 €</b></div>
+          <div class="fila"><span>Sofá 2 plazas</span><i class="dots"></i><b>70 €</b></div>
+          <div class="fila"><span>Sofá 3 plazas</span><i class="dots"></i><b>90 €</b></div>
+          <div class="fila"><span>Sofá 4 plazas</span><i class="dots"></i><b>110 €</b></div>
+          <div class="fila"><span>Sofá con chaise longue</span><i class="dots"></i><b><small>desde</small>120 €</b></div>
+          <div class="fila"><span>Rinconeras grandes</span><i class="dots"></i><b><small>desde</small>140 €</b></div>
+        </div>
+        <div class="grupo"><h3>Colchones</h3>
+          <div class="fila"><span>Individual (90 cm)</span><i class="dots"></i><b>50 €</b></div>
+          <div class="fila"><span>135 cm</span><i class="dots"></i><b>65 €</b></div>
+          <div class="fila"><span>150 / 160 cm</span><i class="dots"></i><b>75 €</b></div>
+          <div class="fila"><span>180 / 200 cm</span><i class="dots"></i><b>85 €</b></div>
+        </div>
+        <div class="grupo"><h3>Sillas</h3>
+          <div class="fila"><span>1 silla tapizada</span><i class="dots"></i><b>12 €</b></div>
+          <div class="fila"><span>Pack 4 sillas</span><i class="dots"></i><b>40 €</b></div>
+          <div class="fila"><span>Pack 6 sillas</span><i class="dots"></i><b>55 €</b></div>
+          <h3 style="margin-top:18px">Alfombras y moquetas</h3>
+          <div class="fila"><span>Alfombras</span><i class="dots"></i><b><small>desde</small>10 €/m²</b></div>
+          <div class="fila"><span>Moquetas</span><i class="dots"></i><b><small>desde</small>6 €/m²</b></div>
+        </div>
+        <div class="grupo"><h3>Packs ahorro</h3>
+          <div class="fila"><span>Sofá 3 plazas + colchón de matrimonio</span><i class="dots"></i><b>140 €</b></div>
+          <div class="fila"><span>Sofá 3 plazas + 6 sillas</span><i class="dots"></i><b>130 €</b></div>
+          <p class="aviso" style="margin-top:14px"><svg><use href="#i-info"/></svg><span>Trabajamos en viviendas, oficinas, locales y grandes superficies. Te damos presupuesto a medida sin compromiso.</span></p>
+          <button class="btn btn-rojo js-reservar" data-srv="hogar" type="button" style="margin-top:8px;width:100%">Pedir cita a domicilio</button>
+        </div>
+      </div>
+      <p class="aviso"><svg><use href="#i-info"/></svg><span>Servicio a domicilio con un mínimo de 60 €. Precios orientativos según tamaño, tejido y estado; las manchas especiales pueden necesitar presupuesto previo.</span></p>
+    </div>
+
+    <div class="panel" role="tabpanel" id="p-garaje" aria-labelledby="t-garaje" hidden>
+      <div class="garaje">
+        <div>
+          <h3 style="font-size:24px">Guarda tu vehículo en nuestra nave</h3>
+          <p class="lead" style="margin-top:10px">¿Buscas un sitio seguro donde dejar tu coche? Alquila tu plaza de garaje en Burgos con total tranquilidad.</p>
+          <ul>
+            <li><svg><use href="#i-check"/></svg>Plazas amplias</li>
+            <li><svg><use href="#i-check"/></svg>Máxima seguridad</li>
+            <li><svg><use href="#i-check"/></svg>Tu vehículo siempre protegido</li>
+            <li><svg><use href="#i-check"/></svg>Instalaciones cuidadas</li>
+          </ul>
+        </div>
+        <div class="cta-g">
+          <a class="btn btn-rojo js-wa" data-msg="Hola, me interesa alquilar una plaza de garaje en vuestra nave. ¿Qué precio tiene?" href="https://wa.me/34642152011" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>Preguntar precio</a>
+          <span style="font-size:14px;color:var(--suave);text-align:center">Te respondemos por WhatsApp</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="trabajos">
+  <div class="wrap">
+    <p class="kicker">Nuestros trabajos</p>
+    <h2>Antes y después</h2>
+    <p class="lead">Mira cómo quedan los coches que pasan por nuestras manos. Subimos cada trabajo a Instagram.</p>
+    <div class="trabajos">
+      <a class="trabajo" href="https://www.instagram.com/ar_detail.burgos/reel/DfkRqTxo5Ja/" target="_blank" rel="noopener"><span class="tipo">Tapicería</span><h3>Asientos como nuevos</h3><p>Limpieza profunda de asientos: fuera la suciedad acumulada.</p><span class="ver">Ver el antes y después <svg width="16" height="16"><use href="#i-arrow"/></svg></span></a>
+      <a class="trabajo" href="https://www.instagram.com/ar_detail.burgos/reel/DfFJxO9IUq_/" target="_blank" rel="noopener"><span class="tipo">Limpieza premium</span><h3>Mercedes C220</h3><p>Interior y exterior al detalle, listo para estrenar.</p><span class="ver">Ver vídeo <svg width="16" height="16"><use href="#i-arrow"/></svg></span></a>
+      <a class="trabajo" href="https://www.instagram.com/ar_detail.burgos/p/DfhtyRUjDpi/" target="_blank" rel="noopener"><span class="tipo">Faros</span><h3>Pulido de faros</h3><p>De opacos y amarillentos a transparentes otra vez.</p><span class="ver">Ver resultado <svg width="16" height="16"><use href="#i-arrow"/></svg></span></a>
+      <a class="trabajo" href="https://www.instagram.com/ar_detail.burgos/reel/DfkTiTUI38D/" target="_blank" rel="noopener"><span class="tipo">Detailing</span><h3>Volkswagen Passat</h3><p>Otro coche que recupera su mejor aspecto.</p><span class="ver">Ver vídeo <svg width="16" height="16"><use href="#i-arrow"/></svg></span></a>
+    </div>
+    <div class="ctas" style="justify-content:flex-start">
+      <a class="btn btn-linea" href="https://www.instagram.com/ar_detail.burgos/" target="_blank" rel="noopener">Ver más en Instagram</a>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="resenas">
+  <div class="wrap">
+    <div class="resena">
+      <div>
+        <div class="estrellas" aria-hidden="true"><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg><svg><use href="#i-star"/></svg></div>
+        <p class="kicker">Reseñas</p>
+        <h2>¿Te ha gustado el resultado?</h2>
+        <p class="lead">Somos nuevos en Burgos y tu opinión nos ayuda muchísimo. Déjanos tu reseña en Google en menos de un minuto.</p>
+      </div>
+      <a class="btn btn-rojo" href="https://search.google.com/local/writereview?placeid=ChIJ8wEyeMX7RQ0RoP_SOoUkt60" target="_blank" rel="noopener"><svg><use href="#i-star"/></svg>Déjanos tu reseña</a>
+    </div>
+  </div>
+</section>
+
+<section id="contacto">
+  <div class="wrap contacto">
+    <div>
+      <p class="kicker">Horario</p>
+      <h2>Cuándo estamos</h2>
+      <div class="horario" id="horario">
+        <div class="d" data-d="1"><span>Lunes</span><b>9:00 – 18:00</b></div>
+        <div class="d" data-d="2"><span>Martes</span><b>9:00 – 18:00</b></div>
+        <div class="d" data-d="3"><span>Miércoles</span><b>9:00 – 18:00</b></div>
+        <div class="d" data-d="4"><span>Jueves</span><b>9:00 – 18:00</b></div>
+        <div class="d" data-d="5"><span>Viernes</span><b>9:00 – 18:00</b></div>
+        <div class="d" data-d="6"><span>Sábado</span><b>10:00 – 14:00</b></div>
+        <div class="d" data-d="0"><span>Domingo</span><b class="cerrado">Cerrado</b></div>
+      </div>
+    </div>
+    <div>
+      <p class="kicker">Contacto</p>
+      <h2>Ven a vernos</h2>
+      <dl class="dl">
+        <div><dt>Dirección</dt><dd>Calle Alfoz de Bricia 18, Nave 13<br>09001 Burgos</dd></div>
+        <div><dt>Teléfono y WhatsApp</dt><dd><a href="tel:+34642152011">642 15 20 11</a> · <a href="tel:+34687342121">687 34 21 21</a></dd></div>
+        <div><dt>Email</dt><dd><a href="mailto:ar.detail.burgos@gmail.com">ar.detail.burgos@gmail.com</a></dd></div>
+        <div><dt>Redes</dt><dd><a href="https://www.instagram.com/ar_detail.burgos/" target="_blank" rel="noopener">Instagram @ar_detail.burgos</a> · <a href="https://www.tiktok.com/@ar_detail.burgos" target="_blank" rel="noopener">TikTok</a></dd></div>
+      </dl>
+      <a class="mapa" href="https://www.google.com/maps/search/?api=1&amp;query=Ar%20detail%20Calle%20Alfoz%20de%20Bricia%2018%20Burgos&amp;query_place_id=ChIJ8wEyeMX7RQ0RoP_SOoUkt60" target="_blank" rel="noopener"><b>Cómo llegar</b><span style="font-size:14px">Abrir en Google Maps <svg width="14" height="14" style="vertical-align:-2px"><use href="#i-arrow"/></svg></span></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 AR Detail · Burgos · <a href="panel.html" style="color:inherit">Acceso propietario</a></span>
+    <a class="apa" href="mailto:apasolutions2026@gmail.com">Web hecha por <b>apa.</b> GLOBAL SERVICES</a>
+  </div>
+</footer>
+
+<div class="flota"><button class="btn btn-rojo js-reservar" type="button"><svg><use href="#i-cal"/></svg>Reservar cita</button></div>
+
+<dialog id="reserva" aria-labelledby="reserva-t">
+  <div class="modal">
+    <header>
+      <h3 id="reserva-t">Reservar cita</h3>
+      <button class="cerrar" type="button" aria-label="Cerrar" id="cerrar">×</button>
+    </header>
+    <div class="pasos" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <div class="paso-t" id="paso-t"></div>
+    <div class="cuerpo" id="paso"></div>
+    <p class="selec" id="selec"></p>
+    <div class="nav-modal">
+      <button class="btn btn-linea" type="button" id="atras">Atrás</button>
+      <button class="btn btn-rojo" type="button" id="sig">Siguiente</button>
+    </div>
+  </div>
+</dialog>
+
+<script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-app-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-firestore-compat.js"></script>
+<script>
+/* ===== Base de datos de reservas (Firebase, proyecto ardetail-apa de APA Global Services) ===== */
+var DB = null;
+try {
+  firebase.initializeApp({
+    apiKey: "AIzaSyD5ABvdWn1ntGMkUCWXBJGOF6_hDG_tKX4",
+    authDomain: "ardetail-apa.firebaseapp.com",
+    projectId: "ardetail-apa",
+    storageBucket: "ardetail-apa.firebasestorage.app",
+    messagingSenderId: "214602410215",
+    appId: "1:214602410215:web:3e1b8ae29a91ca84b29a42"
+  });
+  DB = firebase.firestore();
+} catch (e) { DB = null; }
+
+/* ===== DATOS DE AR DETAIL (sacados de su Instagram y su ficha de Google; confirmar con el dueño) ===== */
+var WA = "34642152011";
+var SERVICIOS = [
+  {cat:"Limpieza de tu coche", items:[
+    {id:"basica", n:"Limpieza básica", p:"desde 70 €"},
+    {id:"premium", n:"Limpieza premium", p:"desde 120 €"},
+    {id:"delicada", n:"Limpieza delicada", p:"desde 180 €"}]},
+  {cat:"Extras", items:[
+    {id:"faros", n:"Restaurado de faros", p:"desde 50 € la pareja"},
+    {id:"ceramico", n:"Tratamiento cerámico", p:"desde 320 €"},
+    {id:"asientos", n:"Limpieza de asientos", p:"desde 25 €/ud."}]},
+  {cat:"A domicilio: sofás, colchones y textiles", items:[
+    {id:"hogar", n:"Sofás, colchones, sillas o alfombras", p:"mín. 60 €", casa:true}]}
+];
+/* Horario: 0 = domingo. Horas en las que se puede dejar el coche */
+var HORAS = {1:[9,10,11,12,13,15,16,17],2:[9,10,11,12,13,15,16,17],3:[9,10,11,12,13,15,16,17],4:[9,10,11,12,13,15,16,17],5:[9,10,11,12,13,15,16,17],6:[10,11,12,13],0:[]};
+
+var DIAS = ["dom","lun","mar","mié","jue","vie","sáb"];
+var DIAS_L = ["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
+var MESES = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+var MESES_L = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+
+/* Hoy en el horario */
+(function(){var d=new Date().getDay();var el=document.querySelector('#horario .d[data-d="'+d+'"]');if(el)el.classList.add('hoy');})();
+
+/* Pestañas */
+var tabs=[].slice.call(document.querySelectorAll('.tab'));
+function abrirTab(t){tabs.forEach(function(x){var on=x===t;x.setAttribute('aria-selected',on);x.tabIndex=on?0:-1;document.getElementById(x.getAttribute('aria-controls')).hidden=!on;});}
+tabs.forEach(function(t,i){
+  t.addEventListener('click',function(){abrirTab(t)});
+  t.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key==='ArrowLeft'){var n=tabs[(i+(e.key==='ArrowRight'?1:tabs.length-1))%tabs.length];abrirTab(n);n.focus();}});
+});
+
+/* Enlaces de WhatsApp con mensaje */
+document.querySelectorAll('.js-wa').forEach(function(a){a.href='https://wa.me/'+WA+'?text='+encodeURIComponent(a.dataset.msg||'Hola');});
+
+/* ===== Reserva ===== */
+var dlg=document.getElementById('reserva'), cuerpo=document.getElementById('paso'), titulo=document.getElementById('paso-t'),
+    selec=document.getElementById('selec'), btnSig=document.getElementById('sig'), btnAtras=document.getElementById('atras');
+var st;
+function nuevo(){return {paso:0,srv:[],dia:null,hora:null,nombre:'',tel:'',coche:'',dir:'',notas:''};}
+function todos(){var r=[];SERVICIOS.forEach(function(c){r=r.concat(c.items)});return r;}
+function buscar(id){return todos().filter(function(s){return s.id===id})[0];}
+function esCasa(){return st.srv.some(function(id){return buscar(id).casa});}
+function fechaLarga(d){return DIAS_L[d.getDay()]+' '+d.getDate()+' de '+MESES_L[d.getMonth()];}
+function hh(h){return h+':00';}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]});}
+
+/* Si internet falla, no dejamos al cliente esperando: pasa a WhatsApp */
+function conTiempo(p,ms){return Promise.race([p,new Promise(function(_,rej){setTimeout(function(){rej({code:'timeout'})},ms)})]);}
+/* Horas ya cogidas, por "AAAA-MM-DD_H" */
+var OCUP = {};
+function iso(d){return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);}
+function cargarOcupado(){
+  if(!DB) return Promise.resolve();
+  var hoy=iso(new Date());
+  return conTiempo(DB.collection('ocupado').where('fecha','>=',hoy).get(),8000).then(function(q){
+    OCUP={}; q.forEach(function(d){OCUP[d.id]=true;});
+  }).catch(function(){});
+}
+
+function abrir(id){
+  st=nuevo(); if(id&&buscar(id)) st.srv=[id];
+  cargarOcupado().then(function(){ if(st.paso===1||st.paso===2) pintar(); });
+  pintar();
+  if(typeof dlg.showModal==='function') dlg.showModal(); else dlg.setAttribute('open','');
+}
+document.querySelectorAll('.js-reservar').forEach(function(b){b.addEventListener('click',function(){abrir(b.dataset.srv)})});
+document.getElementById('cerrar').addEventListener('click',function(){dlg.close()});
+dlg.addEventListener('click',function(e){if(e.target===dlg)dlg.close()});
+
+function pintar(){
+  document.querySelectorAll('.pasos i').forEach(function(i,n){i.classList.toggle('on',n<=Math.min(st.paso,3))});
+  btnAtras.hidden = st.paso===0 || st.paso===4;
+  btnSig.hidden = st.paso===4;
+  btnSig.textContent = st.paso===3 ? 'Confirmar' : 'Siguiente';
+  selec.textContent='';
+  var h='';
+  if(st.paso===0){
+    titulo.innerHTML='¿Qué necesitas?<small>Puedes elegir varios servicios</small>';
+    SERVICIOS.forEach(function(c){
+      h+='<div class="cat">'+c.cat+'</div>';
+      c.items.forEach(function(s){var on=st.srv.indexOf(s.id)>-1;
+        h+='<button type="button" class="opc" data-id="'+s.id+'" aria-pressed="'+on+'"><span class="chk"></span><span class="n">'+s.n+'</span><span class="p">'+s.p+'</span></button>';});
+    });
+    cuerpo.innerHTML=h;
+    cuerpo.querySelectorAll('.opc').forEach(function(b){b.addEventListener('click',function(){
+      var id=b.dataset.id,i=st.srv.indexOf(id); if(i>-1)st.srv.splice(i,1); else st.srv.push(id);
+      b.setAttribute('aria-pressed',i===-1); resumenSel();});});
+    resumenSel();
+  } else if(st.paso===1){
+    titulo.innerHTML='Elige el día<small>'+(esCasa()?'Día en que vamos a tu casa':'Día en que traes el coche')+'</small>';
+    h='<div class="dias">';
+    var hoy=new Date(); hoy.setHours(0,0,0,0);
+    for(var k=0;k<21;k++){
+      var d=new Date(hoy); d.setDate(hoy.getDate()+k);
+      var libres=horasLibres(d), on=st.dia&&st.dia.getTime()===d.getTime();
+      h+='<button type="button" class="dia" data-t="'+d.getTime()+'" aria-pressed="'+!!on+'"'+(libres.length?'':' disabled')+'><small>'+(k===0?'hoy':k===1?'mañana':DIAS[d.getDay()])+'</small><b>'+d.getDate()+'</b><span>'+MESES[d.getMonth()]+'</span></button>';
+    }
+    cuerpo.innerHTML=h+'</div>';
+    cuerpo.querySelectorAll('.dia:not([disabled])').forEach(function(b){b.addEventListener('click',function(){
+      st.dia=new Date(+b.dataset.t); st.hora=null;
+      cuerpo.querySelectorAll('.dia').forEach(function(x){x.setAttribute('aria-pressed',x===b)}); selec.textContent=fechaLarga(st.dia);});});
+    if(st.dia) selec.textContent=fechaLarga(st.dia);
+  } else if(st.paso===2){
+    titulo.innerHTML='Elige la hora<small>'+fechaLarga(st.dia)+'</small>';
+    h='<div class="horas">';
+    horasLibres(st.dia).forEach(function(x){h+='<button type="button" class="hora" data-h="'+x+'" aria-pressed="'+(st.hora===x)+'">'+hh(x)+'</button>';});
+    cuerpo.innerHTML=h+'</div>';
+    cuerpo.querySelectorAll('.hora').forEach(function(b){b.addEventListener('click',function(){
+      st.hora=+b.dataset.h; cuerpo.querySelectorAll('.hora').forEach(function(x){x.setAttribute('aria-pressed',x===b)}); selec.textContent=fechaLarga(st.dia)+' a las '+hh(st.hora);});});
+    if(st.hora!==null) selec.textContent=fechaLarga(st.dia)+' a las '+hh(st.hora);
+  } else if(st.paso===3){
+    titulo.innerHTML='Tus datos<small>Para confirmarte la cita</small>';
+    h='<div class="campo"><label for="f-nombre">Nombre</label><input id="f-nombre" autocomplete="name" value="'+esc(st.nombre)+'"></div>'+
+      '<div class="campo"><label for="f-tel">Teléfono</label><input id="f-tel" type="tel" inputmode="tel" autocomplete="tel" value="'+esc(st.tel)+'"></div>';
+    if(st.srv.some(function(id){return !buscar(id).casa}))
+      h+='<div class="campo"><label for="f-coche">Coche (marca y modelo)</label><input id="f-coche" placeholder="Ej.: Seat León" value="'+esc(st.coche)+'"></div>';
+    if(esCasa())
+      h+='<div class="campo"><label for="f-dir">Dirección para el servicio a domicilio</label><input id="f-dir" autocomplete="street-address" value="'+esc(st.dir)+'"></div>';
+    h+='<div class="campo"><label for="f-notas">Algo que debamos saber (opcional)</label><textarea id="f-notas" placeholder="'+(esCasa()?'Qué hay que limpiar, manchas, medidas…':'Estado del coche, manchas, mascotas…')+'">'+esc(st.notas)+'</textarea></div><p class="err" id="err" role="alert"></p>';
+    cuerpo.innerHTML=h;
+  } else {
+    titulo.innerHTML='';
+    var txt=mensaje();
+    var url='https://wa.me/'+WA+'?text='+encodeURIComponent(txt);
+    h=(st.guardada
+      ? '<div class="ok"><svg><use href="#i-check"/></svg><h3 style="font-size:22px;margin-top:8px">¡Reserva recibida!</h3><p>Te escribimos por WhatsApp para confirmarte la cita. Si quieres, avísanos tú también.</p></div>'
+      : '<div class="ok"><svg><use href="#i-check"/></svg><h3 style="font-size:22px;margin-top:8px">Último paso</h3><p>Envíanos la reserva por WhatsApp y te confirmamos la cita en cuanto la veamos.</p></div>')+
+      '<dl class="resumen"><div><dt>Servicio</dt><dd>'+esc(st.srv.map(function(id){return buscar(id).n}).join(', '))+'</dd></div>'+
+      '<div><dt>Día</dt><dd>'+fechaLarga(st.dia)+'</dd></div><div><dt>Hora</dt><dd>'+hh(st.hora)+'</dd></div>'+
+      '<div><dt>Nombre</dt><dd>'+esc(st.nombre)+'</dd></div></dl>'+
+      '<a class="btn '+(st.guardada?'btn-linea':'btn-rojo')+'" style="width:100%;margin-top:16px" href="'+url+'" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg>'+(st.guardada?'Avisar por WhatsApp':'Enviar por WhatsApp')+'</a>'+
+      '<p style="text-align:center;font-size:13px;color:var(--suave);margin:12px 0 0">Si no se abre WhatsApp, escríbenos al 642 15 20 11.</p>';
+    cuerpo.innerHTML=h;
+  }
+  cuerpo.scrollTop=0;
+}
+function resumenSel(){var n=st.srv.length;selec.textContent=n?(n===1?'1 servicio elegido':n+' servicios elegidos'):'';}
+function horasLibres(d){
+  var lista=(HORAS[d.getDay()]||[]).slice(), ahora=new Date(), f=iso(d);
+  if(d.toDateString()===ahora.toDateString()) lista=lista.filter(function(h){return h>ahora.getHours()+1});
+  return lista.filter(function(h){return !OCUP[f+'_'+h]});
+}
+function mensaje(){
+  var l=['Hola AR Detail, quiero reservar cita:',
+    '• Servicio: '+st.srv.map(function(id){var s=buscar(id);return s.n+' ('+s.p+')'}).join(', '),
+    '• Día: '+fechaLarga(st.dia)+' a las '+hh(st.hora),
+    '• Nombre: '+st.nombre, '• Teléfono: '+st.tel];
+  if(st.coche) l.push('• Coche: '+st.coche);
+  if(st.dir) l.push('• Dirección: '+st.dir);
+  if(st.notas) l.push('• Notas: '+st.notas);
+  return l.join('\n');
+}
+function leer(){['nombre','tel','coche','dir','notas'].forEach(function(k){var el=document.getElementById('f-'+k);if(el)st[k]=el.value.trim();});}
+
+btnSig.addEventListener('click',function(){
+  if(st.paso===0&&!st.srv.length){selec.textContent='Elige al menos un servicio';return;}
+  if(st.paso===1&&!st.dia){selec.textContent='Elige un día';return;}
+  if(st.paso===2&&st.hora===null){selec.textContent='Elige una hora';return;}
+  if(st.paso===3){leer();var err=document.getElementById('err');
+    if(!st.nombre){err.textContent='Escribe tu nombre';return;}
+    if(st.tel.replace(/\D/g,'').length<9){err.textContent='Escribe un teléfono de 9 cifras';return;}
+    if(esCasa()&&!st.dir){err.textContent='Escribe la dirección para ir a tu casa';return;}
+    guardar(err); return;}
+  st.paso++; pintar();
+});
+
+/* Guarda la reserva y bloquea la hora a la vez */
+function guardar(err){
+  if(!DB){ st.paso=4; st.guardada=false; pintar(); return; }
+  var f=iso(st.dia), h=st.hora, res=DB.collection('reservas').doc(), oc=DB.collection('ocupado').doc(f+'_'+h);
+  var b=DB.batch();
+  b.set(res,{servicios:st.srv.map(function(id){var s=buscar(id);return s.n+' ('+s.p+')'}),fecha:f,hora:h,
+    nombre:st.nombre.slice(0,80),tel:st.tel.slice(0,20),coche:(st.coche||'').slice(0,80),dir:(st.dir||'').slice(0,160),
+    notas:(st.notas||'').slice(0,500),estado:'pendiente',importe:null,origen:'web',
+    creada:firebase.firestore.FieldValue.serverTimestamp()});
+  b.set(oc,{fecha:f,hora:h,reserva:res.id});
+  btnSig.disabled=true; btnSig.textContent='Enviando…';
+  conTiempo(b.commit(),10000).then(function(){
+    OCUP[f+'_'+h]=true; st.guardada=true; st.paso=4;
+  }).catch(function(e){
+    if(e&&e.code==='permission-denied'){
+      OCUP[f+'_'+h]=true; st.hora=null; st.paso=2; pintar();
+      selec.textContent='Esa hora se acaba de coger. Elige otra, por favor.'; return 'x';
+    }
+    st.guardada=false; st.paso=4;
+  }).then(function(r){ btnSig.disabled=false; if(r!=='x') pintar(); });
+}
+btnAtras.addEventListener('click',function(){if(st.paso===3)leer();st.paso--;pintar();});
+
+/* ===== Techo de luz hexagonal de la portada ===== */
+(function(){
+  var cv=document.getElementById('hex'); if(!cv||!cv.getContext)return;
+  var ctx=cv.getContext('2d'), quieto=window.matchMedia('(prefers-reduced-motion: reduce)').matches, t0=performance.now();
+  function dibujar(t){
+    var w=cv.clientWidth,h=cv.clientHeight,dpr=Math.min(window.devicePixelRatio||1,2);
+    if(cv.width!==Math.round(w*dpr)){cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);}
+    ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,w,h);
+    var R=Math.max(34,Math.min(58,w/18)), hw=Math.sqrt(3)*R, barrido=((t-t0)/5200)%1.6-0.3;
+    ctx.lineCap='round';
+    for(var row=-1;row*R*1.5<h+R;row++){
+      for(var col=-1;col*hw<w+hw;col++){
+        var cx=col*hw+(row%2?hw/2:0), cy=row*R*1.5;
+        var dist=Math.abs(cx/w-barrido), brillo=Math.max(0,1-dist*3.2);
+        var fade=Math.max(0,1-cy/(h*0.85));
+        var a=(0.20+0.55*brillo)*fade; if(a<0.02)continue;
+        ctx.beginPath();
+        for(var k=0;k<6;k++){var ang=Math.PI/180*(60*k-30), x=cx+R*0.86*Math.cos(ang), y=cy+R*0.86*Math.sin(ang); k?ctx.lineTo(x,y):ctx.moveTo(x,y);}
+        ctx.closePath();
+        ctx.shadowColor='rgba(255,255,255,'+(0.8*a)+')'; ctx.shadowBlur=14;
+        ctx.strokeStyle='rgba(255,255,255,'+a+')'; ctx.lineWidth=3; ctx.stroke();
+      }
+    }
+    ctx.shadowBlur=0;
+    var g=ctx.createRadialGradient(w/2,h*0.95,0,w/2,h*0.95,w*0.55);
+    g.addColorStop(0,'rgba(227,23,43,.30)'); g.addColorStop(1,'rgba(227,23,43,0)');
+    ctx.fillStyle=g; ctx.fillRect(0,0,w,h);
+    if(!quieto) requestAnimationFrame(dibujar);
+  }
+  requestAnimationFrame(dibujar);
+  window.addEventListener('resize',function(){if(quieto)requestAnimationFrame(dibujar)});
+})();
+</script>
+</body>
+</html>

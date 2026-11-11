@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Panel AR Detail</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Maven+Pro:wght@600;800;900&family=Mulish:wght@400;600;700&family=Rosarivo:ital@1&display=swap">
+<style>
+/* Layout: panel de taller — cifras del mes arriba, agenda por días debajo, acciones grandes para el móvil */
+:root{
+  --negro:#0A0A0B;
+  --carbon:#131315;
+  --carbon-2:#1B1B1E;
+  --linea:rgba(255,255,255,.10);
+  --blanco:#F5F5F6;
+  --texto:#D6D6D9;
+  --suave:#9B9BA3;
+  --rojo:#E3172B;
+  --rojo-claro:#FF4152;
+  --verde:#2FBF71;
+  --ambar:#F2A93B;
+  --azul:#5B9BFF;
+  --grad:linear-gradient(135deg,#FF4152 0%,#C3101F 100%);
+  --cromo:linear-gradient(180deg,#FFFFFF 0%,#C9CBD0 48%,#7E8189 52%,#E7E8EB 100%);
+  --f-display:"Maven Pro",system-ui,"Segoe UI",Arial,sans-serif;
+  --f-texto:"Mulish",system-ui,"Segoe UI",Arial,sans-serif;
+  --f-serif:"Rosarivo",Georgia,serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--negro);color:var(--texto);font-family:var(--f-texto);font-size:16px;line-height:1.5;margin:0}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--negro)}
+.wrap{max-width:980px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-display);color:var(--blanco);text-transform:uppercase;letter-spacing:.01em;line-height:1.05;margin:0;text-wrap:balance}
+:focus-visible{outline:2px solid var(--rojo-claro);outline-offset:3px}
+.kicker{font-family:var(--f-serif);font-style:italic;color:var(--suave);font-size:16px;margin:0 0 4px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--f-display);font-weight:800;font-size:13px;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;border-radius:999px;padding:12px 18px;border:0;cursor:pointer;color:var(--blanco);background:transparent}
+.btn-rojo{background:var(--grad);box-shadow:0 8px 24px -10px rgba(227,23,43,.8)}
+.btn-linea{border:1px solid rgba(255,255,255,.26)}
+.btn-blanco{background:var(--blanco);color:var(--negro)}
+.btn-mini{padding:8px 12px;font-size:11px}
+.btn:disabled{opacity:.5;cursor:default}
+.btn svg{width:17px;height:17px;flex:none}
+
+/* Cabecera */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(10,10,11,.9);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--linea)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;height:62px}
+.marca{display:flex;align-items:center;gap:10px;text-decoration:none}
+.marca b{font-family:var(--f-display);font-weight:900;font-size:20px;letter-spacing:.04em;background:var(--cromo);-webkit-background-clip:text;background-clip:text;color:transparent}
+.marca b i{font-style:normal;color:var(--rojo);-webkit-text-fill-color:var(--rojo)}
+.marca span{font-family:var(--f-display);font-weight:800;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--suave);border-left:1px solid var(--linea);padding-left:10px}
+.quien{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--suave);min-width:0}
+.quien em{font-style:normal;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:22ch}
+@media (max-width:560px){.quien em{display:none}}
+
+/* Acceso */
+.acceso{min-height:calc(100dvh - 40px);display:grid;place-items:center;padding-block:40px}
+.caja{width:min(420px,100%);background:var(--carbon);border:1px solid var(--linea);border-radius:22px;padding:28px}
+.caja .marca{flex-direction:column;align-items:flex-start;gap:2px;margin-bottom:22px}
+.caja .marca span{border:0;padding:0;letter-spacing:.42em;font-size:9px}
+.caja h1{font-size:28px}
+.caja p{margin:10px 0 0;color:var(--suave);font-size:15px}
+.caja .btn{width:100%;margin-top:14px}
+.gbtn{background:#fff;color:#1f1f1f;text-transform:none;letter-spacing:0;font-family:var(--f-texto);font-weight:700;font-size:15px}
+.sep{display:flex;align-items:center;gap:12px;color:var(--suave);font-size:13px;margin:20px 0 4px}
+.sep::before,.sep::after{content:"";flex:1;height:1px;background:var(--linea)}
+.campo{display:grid;gap:6px;margin-top:12px}
+.campo label{font-size:13px;font-weight:700;color:var(--blanco)}
+.campo input,.campo select,.campo textarea{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--linea);background:var(--carbon-2);color:var(--blanco);font:inherit;font-size:16px}
+.campo input:focus,.campo select:focus,.campo textarea:focus{outline:2px solid var(--rojo);outline-offset:0;border-color:transparent}
+.enlaces{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:14px}
+.link{background:none;border:0;padding:0;color:var(--texto);font:inherit;font-size:14px;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(255,255,255,.3);cursor:pointer}
+.err{color:var(--rojo-claro);font-size:14px;min-height:1.2em;margin:10px 0 0}
+.ok-msg{color:var(--verde);font-size:14px;margin:10px 0 0}
+
+/* Panel */
+main{padding-block:26px 80px}
+.demo{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:rgba(242,169,59,.12);border:1px solid rgba(242,169,59,.4);color:#F7C77A;border-radius:14px;padding:12px 16px;font-size:14px;margin-bottom:20px}
+.cabeza{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.cabeza h1{font-size:clamp(28px,6vw,40px)}
+.mes{display:flex;align-items:center;gap:6px}
+.mes button{width:40px;height:40px;border-radius:50%;border:1px solid var(--linea);background:var(--carbon);color:var(--blanco);font-size:18px;cursor:pointer}
+.mes b{font-family:var(--f-display);font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--blanco);min-width:9.5em;text-align:center;font-size:14px}
+.kpis{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:12px;margin-top:20px}
+.kpi{background:var(--carbon);border:1px solid var(--linea);border-radius:16px;padding:16px;min-width:0}
+.kpi small{display:block;font-family:var(--f-display);font-weight:800;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--suave)}
+.kpi b{display:block;font-family:var(--f-display);font-weight:900;font-size:30px;color:var(--blanco);line-height:1.1;margin-top:6px;font-variant-numeric:tabular-nums}
+.kpi span{font-size:13px;color:var(--suave)}
+.kpi.grande{background:linear-gradient(160deg,rgba(227,23,43,.22),rgba(227,23,43,.04) 60%),var(--carbon);border-color:rgba(227,23,43,.45)}
+.kpi.grande b{font-size:38px}
+.kpi.aviso b{color:var(--ambar)}
+@media (max-width:760px){.kpis{grid-template-columns:1fr 1fr}.kpi.grande{grid-column:1/-1}}
+.grafica{margin-top:12px;background:var(--carbon);border:1px solid var(--linea);border-radius:16px;padding:16px 16px 10px}
+.grafica h2{font-size:13px;letter-spacing:.1em;color:var(--suave);font-weight:800}
+.grafica svg{display:block;width:100%;height:130px;margin-top:10px}
+.barras{display:flex;justify-content:space-between;font-size:11px;color:var(--suave);font-variant-numeric:tabular-nums}
+
+.bar-acc{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:30px}
+.filtros{display:flex;gap:6px;flex-wrap:wrap}
+.filtro{font-family:var(--f-display);font-weight:800;font-size:12px;letter-spacing:.05em;text-transform:uppercase;padding:9px 14px;border-radius:999px;border:1px solid var(--linea);background:transparent;color:var(--texto);cursor:pointer}
+.filtro[aria-pressed="true"]{background:var(--blanco);color:var(--negro);border-color:var(--blanco)}
+.filtro i{font-style:normal;opacity:.7;margin-left:4px}
+
+.dia-g{margin-top:22px}
+.dia-g h3{font-size:14px;letter-spacing:.08em;color:var(--suave);font-weight:800;padding-bottom:8px;border-bottom:1px solid var(--linea)}
+.dia-g h3 b{color:var(--rojo-claro)}
+.res{display:grid;grid-template-columns:72px 1fr auto;gap:14px;align-items:start;padding:14px 0;border-bottom:1px solid var(--linea)}
+.res .h{font-family:var(--f-display);font-weight:900;font-size:22px;color:var(--blanco);font-variant-numeric:tabular-nums}
+.res .info{min-width:0}
+.res .n{font-weight:700;color:var(--blanco);font-size:16px}
+.res .s{font-size:14px;color:var(--texto);margin-top:2px}
+.res .d{font-size:13px;color:var(--suave);margin-top:4px;overflow-wrap:anywhere}
+.res .d a{color:var(--texto)}
+.res .acc{display:flex;flex-direction:column;gap:6px;align-items:flex-end}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-radius:999px;white-space:nowrap}
+.chip::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.chip.pendiente{color:var(--ambar);background:rgba(242,169,59,.12)}
+.chip.confirmada{color:var(--azul);background:rgba(91,155,255,.12)}
+.chip.hecha{color:var(--verde);background:rgba(47,191,113,.12)}
+.chip.cancelada{color:var(--suave);background:rgba(255,255,255,.06)}
+.res.cancelada .n,.res.cancelada .h{text-decoration:line-through;opacity:.55}
+.importe{font-family:var(--f-display);font-weight:900;color:var(--verde);font-size:18px;font-variant-numeric:tabular-nums}
+.cobrar{display:flex;gap:6px;align-items:center}
+.cobrar input{width:92px;padding:8px 10px;border-radius:10px;border:1px solid var(--linea);background:var(--carbon-2);color:var(--blanco);font:inherit;font-size:16px}
+@media (max-width:620px){.res{grid-template-columns:56px 1fr}.res .acc{grid-column:1/-1;flex-direction:row;flex-wrap:wrap;justify-content:flex-start;align-items:center}}
+.vacio{margin-top:26px;padding:28px;border:1px dashed var(--linea);border-radius:16px;text-align:center;color:var(--suave)}
+
+dialog{width:min(520px,calc(100% - 24px));max-height:calc(100dvh - 24px);padding:0;border:1px solid var(--linea);border-radius:20px;background:var(--carbon);color:var(--texto)}
+dialog::backdrop{background:rgba(0,0,0,.7)}
+.dlg{padding:20px;overflow:auto;max-height:calc(100dvh - 26px)}
+.dlg header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.cerrar{width:36px;height:36px;border-radius:50%;border:1px solid var(--linea);background:transparent;color:var(--blanco);font-size:22px;cursor:pointer}
+.dos{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--blanco);color:var(--negro);font-weight:700;padding:12px 18px;border-radius:999px;z-index:80;font-size:14px;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2c0 1.3 1 2.6 1.1 2.8.1.2 1.9 2.9 4.6 4.1 1.7.7 2.4.8 3.2.7.5-.1 1.5-.6 1.8-1.2.2-.6.2-1.1.1-1.2l-.5-.3Z"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-g" viewBox="0 0 24 24"><path fill="#4285F4" d="M23 12.3c0-.8-.1-1.6-.2-2.3H12v4.4h6.2a5.3 5.3 0 0 1-2.3 3.5v2.9h3.7c2.2-2 3.4-5 3.4-8.5Z"/><path fill="#34A853" d="M12 23.5c3.1 0 5.7-1 7.6-2.8l-3.7-2.9c-1 .7-2.3 1.1-3.9 1.1-3 0-5.6-2-6.5-4.8H1.7v3A11.5 11.5 0 0 0 12 23.5Z"/><path fill="#FBBC05" d="M5.5 14.1a6.9 6.9 0 0 1 0-4.4v-3H1.7a11.5 11.5 0 0 0 0 10.3l3.8-2.9Z"/><path fill="#EA4335" d="M12 4.9c1.7 0 3.2.6 4.4 1.7l3.3-3.3A11.5 11.5 0 0 0 1.7 6.8l3.8 3C6.4 6.9 9 4.9 12 4.9Z"/></symbol>
+</svg>
+
+<div id="app"></div>
+
+<dialog id="nueva" aria-labelledby="nueva-t">
+  <form class="dlg" id="f-nueva">
+    <header><h2 id="nueva-t" style="font-size:20px">Apuntar reserva</h2><button class="cerrar" type="button" aria-label="Cerrar" id="cerrar-n">×</button></header>
+    <p style="margin:0;color:var(--suave);font-size:14px">Para las citas que te piden por teléfono o en persona. Así cuentan en la facturación y la hora queda cogida en la web.</p>
+    <div class="dos">
+      <div class="campo"><label for="n-fecha">Día</label><input id="n-fecha" type="date" required></div>
+      <div class="campo"><label for="n-hora">Hora</label><select id="n-hora"></select></div>
+    </div>
+    <div class="campo"><label for="n-nombre">Nombre del cliente</label><input id="n-nombre" required maxlength="80"></div>
+    <div class="campo"><label for="n-tel">Teléfono</label><input id="n-tel" type="tel" inputmode="tel" maxlength="20"></div>
+    <div class="campo"><label for="n-srv">Servicio</label><select id="n-srv"></select></div>
+    <div class="dos">
+      <div class="campo"><label for="n-coche">Coche</label><input id="n-coche" maxlength="80" placeholder="Marca y modelo"></div>
+      <div class="campo"><label for="n-importe">Importe cobrado (€)</label><input id="n-importe" type="number" inputmode="decimal" min="0" step="0.01" placeholder="Si ya está hecho"></div>
+    </div>
+    <div class="campo"><label for="n-notas">Notas</label><textarea id="n-notas" maxlength="500" rows="2"></textarea></div>
+    <p class="err" id="n-err" role="alert"></p>
+    <button class="btn btn-rojo" type="submit" style="width:100%;margin-top:6px">Guardar reserva</button>
+  </form>
+</dialog>
+
+<script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-app-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-auth-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-firestore-compat.js"></script>
+<script>
+/* ===== Configuración ===== */
+var DUENO = "ar.detail.burgos@gmail.com";   /* único Gmail con acceso (también fijado en las reglas de la base de datos) */
+var CFG = {
+  apiKey: "AIzaSyD5ABvdWn1ntGMkUCWXBJGOF6_hDG_tKX4",
+  authDomain: "ardetail-apa.firebaseapp.com",
+  projectId: "ardetail-apa",
+  storageBucket: "ardetail-apa.firebasestorage.app",
+  messagingSenderId: "214602410215",
+  appId: "1:214602410215:web:3e1b8ae29a91ca84b29a42"
+};
+var SERVICIOS = ["Limpieza básica (desde 70 €)","Limpieza premium (desde 120 €)","Limpieza delicada (desde 180 €)","Restaurado de faros (desde 50 € la pareja)","Tratamiento cerámico (desde 320 €)","Limpieza de asientos (desde 25 €/ud.)","Sofás, colchones, sillas o alfombras (mín. 60 €)","Plaza de garaje","Otro"];
+var HORAS = [8,9,10,11,12,13,14,15,16,17,18,19];
+
+var AUTH=null, DB=null;
+try{ firebase.initializeApp(CFG); AUTH=firebase.auth(); DB=firebase.firestore(); }catch(e){}
+
+/* ===== Utilidades ===== */
+var $=function(s){return document.querySelector(s)};
+var MESES=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+var DIAS=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function iso(d){return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2)}
+function deIso(s){var p=s.split('-');return new Date(+p[0],+p[1]-1,+p[2])}
+function eur(n){return (Math.round(n*100)/100).toLocaleString('es-ES',{minimumFractionDigits:n%1?2:0,maximumFractionDigits:2})+' €'}
+function telWa(t){var d=String(t||'').replace(/\D/g,'');if(d.length===9)d='34'+d;return d}
+function toast(t){var el=document.createElement('div');el.className='toast';el.setAttribute('role','status');el.textContent=t;document.body.appendChild(el);setTimeout(function(){el.remove()},2600)}
+
+/* ===== Estado ===== */
+var S={modo:'carga',user:null,demo:false,res:[],mes:new Date(),filtro:'proximas',cobrando:null,unsub:null,acceso:'google',msg:'',err:''};
+S.mes=new Date(S.mes.getFullYear(),S.mes.getMonth(),1);
+
+/* ===== Datos de ejemplo (solo en la demostración) ===== */
+function datosDemo(){
+  var hoy=new Date(),r=[],nombres=["Javier Ortega","Lucía Martín","Carlos Ruiz","Marta Gil","Sergio Pérez","Ana López","David Sanz","Elena Díez","Pablo Ramos","Irene Cuesta","Álvaro Moreno","Nuria Vega"];
+  var coches=["Seat León","BMW Serie 3","Volkswagen Golf","Audi A4","Mercedes Clase C","Toyota Corolla","Peugeot 3008","Kia Sportage"];
+  var srv=[[SERVICIOS[0],70],[SERVICIOS[1],120],[SERVICIOS[2],180],[SERVICIOS[3],50],[SERVICIOS[1],135],[SERVICIOS[0],80],[SERVICIOS[6],90]];
+  for(var k=-20;k<=9;k++){
+    var d=new Date(hoy);d.setDate(hoy.getDate()+k);if(d.getDay()===0)continue;
+    var n=(k*7+31)%3===0?2:1;
+    for(var j=0;j<n;j++){
+      var i=Math.abs(k*3+j*5)%srv.length,h=[9,10,11,12,16,17][Math.abs(k+j*2)%6];
+      var est=k<0?((k+j)%9===0?'cancelada':'hecha'):k===0?(j?'confirmada':'hecha'):(k%3===0?'confirmada':'pendiente');
+      r.push({id:'demo'+k+'_'+j,fecha:iso(d),hora:h,nombre:nombres[Math.abs(k+j*4)%nombres.length],tel:'6'+String(10000000+Math.abs(k*7919+j*104729)%89999999),
+        servicios:[srv[i][0]],coche:i===6?'':coches[Math.abs(k+j)%coches.length],dir:i===6?'C/ Vitoria 120, Burgos':'',notas:k%4===0?'Tiene perro, pelos en el maletero':'',
+        estado:est,importe:est==='hecha'?srv[i][1]:null,origen:k%5===0?'panel':'web'});
+    }
+  }
+  return r;
+}
+
+/* ===== Acceso ===== */
+if(AUTH){
+  AUTH.onAuthStateChanged(function(u){
+    if(S.demo) return;
+    S.user=u;
+    if(!u){S.modo='acceso';parar();pintar();return}
+    if((u.email||'').toLowerCase()!==DUENO){S.modo='sinacceso';parar();pintar();return}
+    if(!u.emailVerified){S.modo='verificar';parar();pintar();return}
+    S.modo='panel';escuchar();pintar();
+  });
+  AUTH.getRedirectResult().catch(function(e){S.err=errAuth(e);pintar()});
+  setTimeout(function(){if(S.modo==='carga'){S.modo='acceso';pintar()}},6000);
+}else{S.modo='acceso'}
+
+function errAuth(e){
+  var c=(e&&e.code)||'';
+  if(/wrong-password|invalid-credential|invalid-login|user-not-found/.test(c))return'El email o la contraseña no son correctos.';
+  if(/too-many-requests/.test(c))return'Demasiados intentos. Espera unos minutos y vuelve a probar.';
+  if(/email-already-in-use/.test(c))return'Ese email ya tiene contraseña. Pulsa "Entrar" o "He olvidado la contraseña".';
+  if(/weak-password/.test(c))return'La contraseña tiene que tener al menos 6 caracteres.';
+  if(/popup-closed|cancelled-popup/.test(c))return'';
+  if(/unauthorized-domain|operation-not-supported|network/.test(c))return'No se puede entrar desde aquí. Abre el panel desde la web de AR Detail.';
+  return'No se ha podido entrar. Revisa tu conexión y vuelve a probar.';
+}
+function entrarGoogle(){
+  S.err='';var p=new firebase.auth.GoogleAuthProvider();p.setCustomParameters({login_hint:DUENO,prompt:'select_account'});
+  AUTH.signInWithPopup(p).catch(function(e){
+    if(/popup-blocked|operation-not-supported/.test(e.code||''))return AUTH.signInWithRedirect(p);
+    S.err=errAuth(e);pintar();
+  });
+}
+
+/* ===== Lectura en tiempo real ===== */
+function parar(){if(S.unsub){S.unsub();S.unsub=null}}
+function desde(){var h=iso(new Date()),m=iso(S.mes);return m<h?m:h}
+function escuchar(){
+  parar();
+  if(S.demo){S.res=datosDemo();pintar();return}
+  S.unsub=DB.collection('reservas').where('fecha','>=',desde()).onSnapshot(function(q){
+    S.res=[];q.forEach(function(d){var x=d.data();x.id=d.id;S.res.push(x)});pintar();
+  },function(){S.err='No se pueden leer las reservas. Cierra sesión y vuelve a entrar.';pintar()});
+}
+
+/* ===== Acciones ===== */
+function buscar(id){return S.res.filter(function(r){return r.id===id})[0]}
+function cambiar(id,datos){
+  if(S.demo){Object.assign(buscar(id),datos);pintar();return Promise.resolve()}
+  return DB.collection('reservas').doc(id).update(datos);
+}
+function liberarHora(r){
+  if(S.demo)return Promise.resolve();
+  var ref=DB.collection('ocupado').doc(r.fecha+'_'+r.hora);
+  return ref.get().then(function(d){if(d.exists&&d.data().reserva===r.id)return ref.delete()}).catch(function(){});
+}
+function accion(a,id){
+  var r=buscar(id);if(!r)return;
+  if(a==='confirmar'){
+    var txt='Hola '+r.nombre.split(' ')[0]+', te confirmamos tu cita en AR Detail el '+DIAS[deIso(r.fecha).getDay()]+' '+deIso(r.fecha).getDate()+' de '+MESES[deIso(r.fecha).getMonth()]+' a las '+r.hora+':00. Estamos en C/ Alfoz de Bricia 18, Nave 13 (Burgos). ¡Te esperamos!';
+    window.open('https://wa.me/'+telWa(r.tel)+'?text='+encodeURIComponent(txt),'_blank','noopener');
+    cambiar(id,{estado:'confirmada'}).then(function(){toast('Reserva confirmada')});
+  }else if(a==='cobrar'){S.cobrando=id;pintar();var i=$('#imp-'+id);if(i)i.focus()}
+  else if(a==='nocobrar'){S.cobrando=null;pintar()}
+  else if(a==='guardarcobro'){
+    var v=parseFloat(String(($('#imp-'+id)||{}).value||'').replace(',','.'));
+    if(!(v>=0)){toast('Escribe lo que has cobrado');return}
+    S.cobrando=null;cambiar(id,{estado:'hecha',importe:Math.round(v*100)/100}).then(function(){toast('Trabajo hecho: '+eur(v))});
+  }else if(a==='cancelar'){
+    if(S.armado!==id){S.armado=id;pintar();return}
+    S.armado=null;cambiar(id,{estado:'cancelada'}).then(function(){return liberarHora(r)}).then(function(){toast('Reserva cancelada y hora liberada')});
+  }else if(a==='nocancelar'){S.armado=null;pintar()}
+  else if(a==='recuperar'){cambiar(id,{estado:'pendiente',importe:null}).then(function(){toast('Reserva recuperada')})}
+}
+
+/* ===== Pintar ===== */
+function pintar(){
+  var app=$('#app');
+  if(S.modo==='carga'){app.innerHTML='<div class="acceso"><p style="color:var(--suave)">Cargando…</p></div>';return}
+  if(S.modo==='acceso'){app.innerHTML=vAcceso();montarAcceso();return}
+  if(S.modo==='sinacceso'){app.innerHTML=caja('<h1>Sin acceso</h1><p>Has entrado con <b style="color:var(--blanco)">'+esc(S.user.email)+'</b>. Este panel solo se abre con la cuenta de AR Detail ('+DUENO+').</p><button class="btn btn-linea" id="salir">Entrar con otra cuenta</button>');$('#salir').onclick=salir;return}
+  if(S.modo==='verificar'){app.innerHTML=caja('<h1>Revisa tu correo</h1><p>Te hemos enviado un email a <b style="color:var(--blanco)">'+DUENO+'</b>. Abre el enlace que trae para activar el acceso y vuelve aquí.</p><button class="btn btn-rojo" id="ya">Ya lo he abierto</button><button class="btn btn-linea" id="otra">Enviar el email otra vez</button><div class="enlaces"><button class="link" id="salir">Salir</button></div><p class="ok-msg" id="v-ok"></p>');
+    $('#ya').onclick=function(){S.user.reload().then(function(){var u=AUTH.currentUser;if(u&&u.emailVerified){u.getIdToken(true).then(function(){S.modo='panel';escuchar();pintar()})}else{$('#v-ok').textContent='Todavía no está activado. Abre el enlace del email.'}})};
+    $('#otra').onclick=function(){S.user.sendEmailVerification().then(function(){$('#v-ok').textContent='Email enviado. Mira también en spam.'}).catch(function(){$('#v-ok').textContent='Espera un minuto antes de pedir otro.'})};
+    $('#salir').onclick=salir;return}
+  app.innerHTML=vPanel();montarPanel();
+}
+function caja(html){return '<div class="wrap acceso"><div class="caja"><div class="marca"><b>A<i>R</i> DETAIL</b><span>BURGOS</span></div>'+html+'</div></div>'}
+function vAcceso(){
+  var h='<p class="kicker">Panel del propietario</p><h1>Tus reservas</h1><p>Entra con la cuenta de Google del negocio para ver tus citas y lo que llevas facturado.</p>'+
+    '<button class="btn gbtn" id="g"><svg><use href="#i-g"/></svg>Entrar con Google</button>'+
+    '<div class="sep">o con email y contraseña</div>'+
+    '<form id="f-acc"><div class="campo"><label for="a-email">Email</label><input id="a-email" type="email" autocomplete="username" value="'+DUENO+'"></div>'+
+    (S.acceso!=='olvido'?'<div class="campo"><label for="a-pw">Contraseña</label><input id="a-pw" type="password" autocomplete="'+(S.acceso==='crear'?'new-password':'current-password')+'"></div>':'')+
+    '<button class="btn btn-linea" type="submit">'+(S.acceso==='crear'?'Crear mi contraseña':S.acceso==='olvido'?'Enviarme un email para cambiarla':'Entrar')+'</button></form>'+
+    '<div class="enlaces">'+(S.acceso==='google'||S.acceso==='entrar'?'<button class="link" data-m="crear">Primera vez: crear contraseña</button><button class="link" data-m="olvido">He olvidado la contraseña</button>':'<button class="link" data-m="entrar">Volver</button>')+'</div>'+
+    '<p class="err" role="alert">'+esc(S.err)+'</p><p class="ok-msg">'+esc(S.msg)+'</p>'+
+    '<div class="sep">¿Solo quieres verlo?</div><button class="btn btn-linea" id="demo">Ver demostración con datos de ejemplo</button>';
+  return caja(h);
+}
+function montarAcceso(){
+  $('#demo').onclick=function(){S.demo=true;S.modo='panel';S.user={email:'demostración'};escuchar();pintar()};
+  $('#g').onclick=function(){if(!AUTH){S.err='No se puede conectar. Revisa tu conexión.';pintar();return}entrarGoogle()};
+  document.querySelectorAll('[data-m]').forEach(function(b){b.onclick=function(){S.acceso=b.dataset.m;S.err='';S.msg='';pintar()}});
+  $('#f-acc').onsubmit=function(e){
+    e.preventDefault();if(!AUTH){S.err='No se puede conectar. Revisa tu conexión.';pintar();return}
+    var em=$('#a-email').value.trim().toLowerCase(),pw=$('#a-pw')?$('#a-pw').value:'';S.err='';S.msg='';
+    if(em!==DUENO){S.err='Este panel solo funciona con '+DUENO+'.';pintar();return}
+    if(S.acceso==='olvido'){AUTH.sendPasswordResetEmail(em).then(function(){S.msg='Listo. Te hemos enviado un email para poner una contraseña nueva.';S.acceso='entrar';pintar()}).catch(function(x){S.err=errAuth(x);pintar()});return}
+    if(S.acceso==='crear'){AUTH.createUserWithEmailAndPassword(em,pw).then(function(c){return c.user.sendEmailVerification()}).catch(function(x){S.err=errAuth(x);pintar()});return}
+    AUTH.signInWithEmailAndPassword(em,pw).catch(function(x){S.err=errAuth(x);pintar()});
+  };
+}
+function salir(){parar();if(S.demo){S.demo=false;S.res=[];S.modo='acceso';pintar();return}AUTH.signOut()}
+
+function delMes(){var a=iso(S.mes),f=iso(new Date(S.mes.getFullYear(),S.mes.getMonth()+1,0));return S.res.filter(function(r){return r.fecha>=a&&r.fecha<=f})}
+function vPanel(){
+  var mes=delMes(),hechas=mes.filter(function(r){return r.estado==='hecha'}),
+      fact=hechas.reduce(function(s,r){return s+(+r.importe||0)},0),
+      activas=mes.filter(function(r){return r.estado!=='cancelada'}),
+      pend=S.res.filter(function(r){return r.estado==='pendiente'&&r.fecha>=iso(new Date())}),
+      media=hechas.length?fact/hechas.length:0,
+      hoy=iso(new Date()),
+      esActual=S.mes.getFullYear()===new Date().getFullYear()&&S.mes.getMonth()===new Date().getMonth();
+  var h='<header class="top"><div class="wrap"><span class="marca"><b>A<i>R</i> DETAIL</b><span>Panel</span></span>'+
+    '<div class="quien"><em>'+esc(S.user.email)+'</em><button class="btn btn-linea btn-mini" id="salir">Salir</button></div></div></header><main class="wrap">';
+  if(S.demo)h+='<div class="demo" role="status"><span><b>Demostración.</b> Son datos de ejemplo: nada de esto es real ni se guarda.</span><button class="btn btn-linea btn-mini" id="fin-demo">Salir de la demo</button></div>';
+  if(S.err)h+='<p class="err" role="alert">'+esc(S.err)+'</p>';
+  h+='<div class="cabeza"><div><p class="kicker">'+(esActual?'Este mes':'Resumen del mes')+'</p><h1>'+MESES[S.mes.getMonth()]+' '+S.mes.getFullYear()+'</h1></div>'+
+    '<div class="mes"><button id="m-ant" aria-label="Mes anterior">‹</button><b>'+MESES[S.mes.getMonth()]+' '+S.mes.getFullYear()+'</b><button id="m-sig" aria-label="Mes siguiente">›</button></div></div>';
+  h+='<div class="kpis">'+
+    '<div class="kpi grande"><small>Facturado</small><b>'+eur(fact)+'</b><span>'+hechas.length+' '+(hechas.length===1?'trabajo hecho':'trabajos hechos')+'</span></div>'+
+    '<div class="kpi"><small>Reservas</small><b>'+activas.length+'</b><span>en el mes</span></div>'+
+    '<div class="kpi'+(pend.length?' aviso':'')+'"><small>Sin confirmar</small><b>'+pend.length+'</b><span>esperan tu WhatsApp</span></div>'+
+    '<div class="kpi"><small>Ticket medio</small><b>'+(hechas.length?eur(media):'—')+'</b><span>por trabajo</span></div></div>';
+  h+=grafica(hechas);
+  var lista,vacio;
+  if(S.filtro==='proximas'){lista=S.res.filter(function(r){return r.fecha>=hoy&&(r.estado==='pendiente'||r.estado==='confirmada')});vacio='No tienes citas pendientes. Las reservas de la web aparecerán aquí al momento.'}
+  else if(S.filtro==='cobrar'){lista=S.res.filter(function(r){return r.fecha<=hoy&&(r.estado==='pendiente'||r.estado==='confirmada')});vacio='Nada pendiente de cobrar.'}
+  else {lista=mes;vacio='No hay reservas en este mes.'}
+  var nCobrar=S.res.filter(function(r){return r.fecha<=hoy&&(r.estado==='pendiente'||r.estado==='confirmada')}).length;
+  h+='<div class="bar-acc"><div class="filtros" role="group" aria-label="Qué reservas ver">'+
+    '<button class="filtro" data-f="proximas" aria-pressed="'+(S.filtro==='proximas')+'">Próximas</button>'+
+    '<button class="filtro" data-f="cobrar" aria-pressed="'+(S.filtro==='cobrar')+'">Por cobrar<i>'+nCobrar+'</i></button>'+
+    '<button class="filtro" data-f="mes" aria-pressed="'+(S.filtro==='mes')+'">Todo el mes</button></div>'+
+    '<button class="btn btn-rojo" id="nueva-btn"><svg><use href="#i-plus"/></svg>Apuntar reserva</button></div>';
+  lista.sort(function(a,b){return a.fecha===b.fecha?a.hora-b.hora:(a.fecha<b.fecha?-1:1)});
+  if(!lista.length)h+='<div class="vacio">'+vacio+'</div>';
+  var actual='';
+  lista.forEach(function(r){
+    if(r.fecha!==actual){if(actual)h+='</div>';actual=r.fecha;var d=deIso(r.fecha);
+      h+='<div class="dia-g"><h3>'+(r.fecha===hoy?'<b>Hoy</b> · ':'')+DIAS[d.getDay()]+' '+d.getDate()+' de '+MESES[d.getMonth()]+'</h3>';}
+    h+=vRes(r);
+  });
+  if(actual)h+='</div>';
+  return h+'</main>';
+}
+function vRes(r){
+  var acc='';
+  if(r.estado==='pendiente')acc+='<button class="btn btn-rojo btn-mini" data-a="confirmar" data-id="'+r.id+'"><svg><use href="#i-wa"/></svg>Confirmar</button>';
+  if((r.estado==='pendiente'||r.estado==='confirmada')){
+    if(S.cobrando===r.id)acc+='<div class="cobrar"><input id="imp-'+r.id+'" type="number" inputmode="decimal" min="0" step="0.01" placeholder="€" aria-label="Importe cobrado en euros"><button class="btn btn-blanco btn-mini" data-a="guardarcobro" data-id="'+r.id+'">OK</button><button class="btn btn-linea btn-mini" data-a="nocobrar" data-id="'+r.id+'">×</button></div>';
+    else acc+='<button class="btn btn-linea btn-mini" data-a="cobrar" data-id="'+r.id+'">Hecho y cobrado</button>';
+    acc+=S.armado===r.id?'<span style="display:flex;gap:6px"><button class="btn btn-mini" style="background:var(--rojo)" data-a="cancelar" data-id="'+r.id+'">Sí, cancelar</button><button class="btn btn-linea btn-mini" data-a="nocancelar" data-id="'+r.id+'">No</button></span>':'<button class="link" style="font-size:13px" data-a="cancelar" data-id="'+r.id+'">Cancelar cita</button>';
+  }
+  if(r.estado==='hecha')acc+='<span class="importe">'+eur(+r.importe||0)+'</span><button class="link" style="font-size:13px" data-a="cobrar" data-id="'+r.id+'">Cambiar importe</button>';
+  if(r.estado==='hecha'&&S.cobrando===r.id)acc='<div class="cobrar"><input id="imp-'+r.id+'" type="number" inputmode="decimal" min="0" step="0.01" value="'+(+r.importe||0)+'" aria-label="Importe cobrado en euros"><button class="btn btn-blanco btn-mini" data-a="guardarcobro" data-id="'+r.id+'">OK</button><button class="btn btn-linea btn-mini" data-a="nocobrar" data-id="'+r.id+'">×</button></div>';
+  if(r.estado==='cancelada')acc+='<button class="link" style="font-size:13px" data-a="recuperar" data-id="'+r.id+'">Recuperar</button>';
+  var det=[];
+  if(r.tel)det.push('<a href="https://wa.me/'+telWa(r.tel)+'" target="_blank" rel="noopener">'+esc(r.tel)+'</a>');
+  if(r.coche)det.push(esc(r.coche));
+  if(r.dir)det.push('A domicilio: '+esc(r.dir));
+  if(r.origen==='panel')det.push('apuntada por ti');
+  return '<div class="res '+r.estado+'"><div class="h">'+r.hora+':00</div><div class="info"><div class="n">'+esc(r.nombre)+' <span class="chip '+r.estado+'">'+r.estado+'</span></div>'+
+    '<div class="s">'+esc((r.servicios||[]).join(' · '))+'</div><div class="d">'+det.join(' · ')+'</div>'+(r.notas?'<div class="d">“'+esc(r.notas)+'”</div>':'')+'</div><div class="acc">'+acc+'</div></div>';
+}
+function grafica(hechas){
+  var dias=new Date(S.mes.getFullYear(),S.mes.getMonth()+1,0).getDate(),v=[];for(var i=0;i<dias;i++)v.push(0);
+  hechas.forEach(function(r){v[deIso(r.fecha).getDate()-1]+=(+r.importe||0)});
+  var max=Math.max.apply(null,v)||1,W=600,H=120,bw=W/dias,s='';
+  var tope=Math.ceil(max/50)*50||50;
+  s+='<line x1="0" y1="'+(H-0.5)+'" x2="'+W+'" y2="'+(H-0.5)+'" stroke="rgba(255,255,255,.18)"/>';
+  s+='<line x1="0" y1="'+(H-H*(tope/2)/tope)+'" x2="'+W+'" y2="'+(H-H*(tope/2)/tope)+'" stroke="rgba(255,255,255,.06)" stroke-dasharray="3 4"/>';
+  var hoyD=new Date();
+  v.forEach(function(x,i){var bh=x?Math.max(3,H*x/tope):0,esHoy=S.mes.getMonth()===hoyD.getMonth()&&S.mes.getFullYear()===hoyD.getFullYear()&&i===hoyD.getDate()-1;
+    if(bh)s+='<rect x="'+(i*bw+bw*0.18)+'" y="'+(H-bh)+'" width="'+(bw*0.64)+'" height="'+bh+'" rx="2" fill="'+(esHoy?'#FF4152':'#E3172B')+'" opacity="'+(esHoy?1:.8)+'"><title>Día '+(i+1)+': '+eur(x)+'</title></rect>';
+    else s+='<rect x="'+(i*bw+bw*0.18)+'" y="'+(H-2)+'" width="'+(bw*0.64)+'" height="2" fill="rgba(255,255,255,.08)"/>';});
+  return '<div class="grafica"><h2>Facturado por día · máximo '+eur(Math.max.apply(null,v))+'</h2><svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none" role="img" aria-label="Facturación por día del mes">'+s+'</svg><div class="barras"><span>1</span><span>'+Math.ceil(dias/2)+'</span><span>'+dias+'</span></div></div>';
+}
+function montarPanel(){
+  $('#salir').onclick=salir;
+  var fd=$('#fin-demo');if(fd)fd.onclick=salir;
+  $('#m-ant').onclick=function(){S.mes=new Date(S.mes.getFullYear(),S.mes.getMonth()-1,1);escuchar();pintar()};
+  $('#m-sig').onclick=function(){S.mes=new Date(S.mes.getFullYear(),S.mes.getMonth()+1,1);escuchar();pintar()};
+  document.querySelectorAll('.filtro').forEach(function(b){b.onclick=function(){S.filtro=b.dataset.f;pintar()}});
+  document.querySelectorAll('[data-a]').forEach(function(b){b.onclick=function(){accion(b.dataset.a,b.dataset.id)}});
+  $('#nueva-btn').onclick=abrirNueva;
+}
+
+/* ===== Apuntar reserva a mano ===== */
+var dlg=$('#nueva');
+$('#n-hora').innerHTML=HORAS.map(function(h){return '<option value="'+h+'">'+h+':00</option>'}).join('');
+$('#n-srv').innerHTML=SERVICIOS.map(function(s){return '<option>'+esc(s)+'</option>'}).join('');
+function abrirNueva(){$('#f-nueva').reset();$('#n-fecha').value=iso(new Date());$('#n-hora').value='10';$('#n-err').textContent='';dlg.showModal?dlg.showModal():dlg.setAttribute('open','')}
+$('#cerrar-n').onclick=function(){dlg.close()};
+$('#f-nueva').onsubmit=function(e){
+  e.preventDefault();var err=$('#n-err');err.textContent='';
+  var f=$('#n-fecha').value,h=+$('#n-hora').value,nom=$('#n-nombre').value.trim(),imp=$('#n-importe').value;
+  if(!f||!nom){err.textContent='Pon el día y el nombre del cliente.';return}
+  var r={servicios:[$('#n-srv').value],fecha:f,hora:h,nombre:nom.slice(0,80),tel:$('#n-tel').value.trim().slice(0,20),coche:$('#n-coche').value.trim().slice(0,80),dir:'',notas:$('#n-notas').value.trim().slice(0,500),
+    estado:imp!==''?'hecha':'confirmada',importe:imp!==''?Math.round(parseFloat(imp.replace(',','.'))*100)/100:null,origen:'panel'};
+  if(S.demo){r.id='demo'+Date.now();S.res.push(r);dlg.close();pintar();toast('Reserva apuntada');return}
+  var ref=DB.collection('reservas').doc(),oc=DB.collection('ocupado').doc(f+'_'+h);
+  oc.get().then(function(d){
+    if(d.exists&&!confirm2())return null;
+    var b=DB.batch();r.creada=firebase.firestore.FieldValue.serverTimestamp();b.set(ref,r);
+    if(!d.exists)b.set(oc,{fecha:f,hora:h,reserva:ref.id});
+    return b.commit().then(function(){return true});
+  }).then(function(ok){if(ok){dlg.close();toast('Reserva apuntada')}}).catch(function(){err.textContent='No se ha podido guardar. Revisa tu conexión.'});
+};
+/* Si la hora ya estaba cogida, se apunta igual (pueden caber dos coches) */
+function confirm2(){return true}
+
+pintar();
+</script>
+</body>
+</html>
