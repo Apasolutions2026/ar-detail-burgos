@@ -175,7 +175,9 @@ dialog::backdrop{background:rgba(0,0,0,.7)}
 <script src="https://cdn.jsdelivr.net/npm/firebase@10.12.2/firebase-firestore-compat.js"></script>
 <script>
 /* ===== Configuración ===== */
-var DUENO = "ar.detail.burgos@gmail.com";   /* único Gmail con acceso (también fijado en las reglas de la base de datos) */
+var DUENO = "ar.detail.burgos@gmail.com";   /* Gmail del dueño */
+var ACCESO = ["ar.detail.burgos@gmail.com","apasolutions2026@gmail.com"];   /* cuentas con acceso (las mismas que en las reglas de la base de datos) */
+function permitido(e){return ACCESO.indexOf(String(e||"").toLowerCase())>-1}
 var CFG = {
   apiKey: "AIzaSyD5ABvdWn1ntGMkUCWXBJGOF6_hDG_tKX4",
   authDomain: "ardetail-apa.firebaseapp.com",
@@ -230,7 +232,7 @@ if(AUTH){
     if(S.demo) return;
     S.user=u;
     if(!u){S.modo='acceso';parar();pintar();return}
-    if((u.email||'').toLowerCase()!==DUENO){S.modo='sinacceso';parar();pintar();return}
+    if(!permitido(u.email)){S.modo='sinacceso';parar();pintar();return}
     if(!u.emailVerified){S.modo='verificar';parar();pintar();return}
     S.modo='panel';escuchar();pintar();
   });
@@ -249,7 +251,7 @@ function errAuth(e){
   return'No se ha podido entrar. Revisa tu conexión y vuelve a probar.';
 }
 function entrarGoogle(){
-  S.err='';var p=new firebase.auth.GoogleAuthProvider();p.setCustomParameters({login_hint:DUENO,prompt:'select_account'});
+  S.err='';var p=new firebase.auth.GoogleAuthProvider();p.setCustomParameters({prompt:'select_account'});
   AUTH.signInWithPopup(p).catch(function(e){
     if(/popup-blocked|operation-not-supported/.test(e.code||''))return AUTH.signInWithRedirect(p);
     S.err=errAuth(e);pintar();
@@ -303,7 +305,7 @@ function pintar(){
   if(S.modo==='carga'){app.innerHTML='<div class="acceso"><p style="color:var(--suave)">Cargando…</p></div>';return}
   if(S.modo==='acceso'){app.innerHTML=vAcceso();montarAcceso();return}
   if(S.modo==='sinacceso'){app.innerHTML=caja('<h1>Sin acceso</h1><p>Has entrado con <b style="color:var(--blanco)">'+esc(S.user.email)+'</b>. Este panel solo se abre con la cuenta de AR Detail ('+DUENO+').</p><button class="btn btn-linea" id="salir">Entrar con otra cuenta</button>');$('#salir').onclick=salir;return}
-  if(S.modo==='verificar'){app.innerHTML=caja('<h1>Revisa tu correo</h1><p>Te hemos enviado un email a <b style="color:var(--blanco)">'+DUENO+'</b>. Abre el enlace que trae para activar el acceso y vuelve aquí.</p><button class="btn btn-rojo" id="ya">Ya lo he abierto</button><button class="btn btn-linea" id="otra">Enviar el email otra vez</button><div class="enlaces"><button class="link" id="salir">Salir</button></div><p class="ok-msg" id="v-ok"></p>');
+  if(S.modo==='verificar'){app.innerHTML=caja('<h1>Revisa tu correo</h1><p>Te hemos enviado un email a <b style="color:var(--blanco)">'+esc(S.user.email)+'</b>. Abre el enlace que trae para activar el acceso y vuelve aquí.</p><button class="btn btn-rojo" id="ya">Ya lo he abierto</button><button class="btn btn-linea" id="otra">Enviar el email otra vez</button><div class="enlaces"><button class="link" id="salir">Salir</button></div><p class="ok-msg" id="v-ok"></p>');
     $('#ya').onclick=function(){S.user.reload().then(function(){var u=AUTH.currentUser;if(u&&u.emailVerified){u.getIdToken(true).then(function(){S.modo='panel';escuchar();pintar()})}else{$('#v-ok').textContent='Todavía no está activado. Abre el enlace del email.'}})};
     $('#otra').onclick=function(){S.user.sendEmailVerification().then(function(){$('#v-ok').textContent='Email enviado. Mira también en spam.'}).catch(function(){$('#v-ok').textContent='Espera un minuto antes de pedir otro.'})};
     $('#salir').onclick=salir;return}
@@ -329,7 +331,7 @@ function montarAcceso(){
   $('#f-acc').onsubmit=function(e){
     e.preventDefault();if(!AUTH){S.err='No se puede conectar. Revisa tu conexión.';pintar();return}
     var em=$('#a-email').value.trim().toLowerCase(),pw=$('#a-pw')?$('#a-pw').value:'';S.err='';S.msg='';
-    if(em!==DUENO){S.err='Este panel solo funciona con '+DUENO+'.';pintar();return}
+    if(!permitido(em)){S.err='Este panel solo funciona con '+DUENO+'.';pintar();return}
     if(S.acceso==='olvido'){AUTH.sendPasswordResetEmail(em).then(function(){S.msg='Listo. Te hemos enviado un email para poner una contraseña nueva.';S.acceso='entrar';pintar()}).catch(function(x){S.err=errAuth(x);pintar()});return}
     if(S.acceso==='crear'){AUTH.createUserWithEmailAndPassword(em,pw).then(function(c){return c.user.sendEmailVerification()}).catch(function(x){S.err=errAuth(x);pintar()});return}
     AUTH.signInWithEmailAndPassword(em,pw).catch(function(x){S.err=errAuth(x);pintar()});
