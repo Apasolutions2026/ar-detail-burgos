@@ -135,6 +135,40 @@ dialog::backdrop{background:rgba(0,0,0,.7)}
 .dlg header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
 .cerrar{width:36px;height:36px;border-radius:50%;border:1px solid var(--linea);background:transparent;color:var(--blanco);font-size:22px;cursor:pointer}
 .dos{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.vistas{display:flex;gap:4px;padding-top:14px;border-bottom:1px solid var(--linea)}
+.vista{font-family:var(--f-display);font-weight:800;font-size:13px;letter-spacing:.08em;text-transform:uppercase;padding:12px 16px;background:none;border:0;border-bottom:3px solid transparent;color:var(--suave);cursor:pointer;margin-bottom:-1px}
+.vista[aria-current="page"]{color:var(--blanco);border-bottom-color:var(--rojo)}
+.bloque{margin-top:30px}
+.tit{font-size:18px;letter-spacing:.04em}
+.sub{margin:4px 0 0;color:var(--suave);font-size:14px}
+.tit-fila{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap}
+.tabla-x{overflow-x:auto;margin-top:12px;border:1px solid var(--linea);border-radius:14px}
+.t{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums;min-width:460px}
+.t th{font-family:var(--f-display);font-weight:800;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--suave);text-align:left;padding:12px 14px;background:var(--carbon);border-bottom:1px solid var(--linea)}
+.t td{padding:11px 14px;border-bottom:1px solid var(--linea);color:var(--texto)}
+.t td small{display:block;color:var(--suave);font-size:12px}
+.t tbody tr:last-child td{border-bottom:0}
+.t tfoot td{font-weight:800;color:var(--blanco);background:var(--carbon);border-top:1px solid var(--linea);border-bottom:0}
+.t .num{text-align:right}
+.t .fuerte{color:var(--blanco);font-weight:700}
+.fila-mes{cursor:pointer}
+.fila-mes:hover td{background:rgba(255,255,255,.03)}
+.fila-mes.sel td{background:rgba(227,23,43,.12)}
+.sube{color:var(--verde);font-weight:700}
+.curso{font-size:12px;color:var(--suave);font-style:italic}
+@media (max-width:560px){.t .opc{display:none}.t{min-width:0}.kf .kpi:last-child{grid-column:1/-1}}
+.baja{color:var(--rojo-claro);font-weight:700}
+.srv{display:grid;gap:10px;margin-top:12px}
+.srv-f{display:grid;grid-template-columns:minmax(0,1.3fr) 2fr auto;gap:14px;align-items:center;background:var(--carbon);border:1px solid var(--linea);border-radius:12px;padding:12px 14px}
+.srv-n b{display:block;color:var(--blanco);font-size:15px}
+.srv-n span{font-size:12px;color:var(--suave)}
+.srv-b{height:10px;border-radius:10px;background:rgba(255,255,255,.06);overflow:hidden}
+.srv-b i{display:block;height:100%;border-radius:10px;background:var(--grad)}
+.srv-t{font-family:var(--f-display);font-weight:900;color:var(--blanco);font-size:17px;font-variant-numeric:tabular-nums}
+@media (max-width:560px){.srv-f{grid-template-columns:1fr auto}.srv-b{grid-column:1/-1;grid-row:2}}
+.meses12{display:grid;grid-template-columns:repeat(12,1fr);text-align:center;font-size:11px;color:var(--suave);text-transform:capitalize}
+.meses12 .on{color:var(--blanco);font-weight:700}
+.bm{cursor:pointer}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--blanco);color:var(--negro);font-weight:700;padding:12px 18px;border-radius:999px;z-index:80;font-size:14px;box-shadow:0 10px 30px rgba(0,0,0,.5)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -204,7 +238,7 @@ function telWa(t){var d=String(t||'').replace(/\D/g,'');if(d.length===9)d='34'+d
 function toast(t){var el=document.createElement('div');el.className='toast';el.setAttribute('role','status');el.textContent=t;document.body.appendChild(el);setTimeout(function(){el.remove()},2600)}
 
 /* ===== Estado ===== */
-var S={modo:'carga',user:null,demo:false,res:[],mes:new Date(),filtro:'proximas',cobrando:null,unsub:null,acceso:'google',msg:'',err:''};
+var S={modo:'carga',user:null,demo:false,res:[],mes:new Date(),filtro:'proximas',cobrando:null,unsub:null,acceso:'google',msg:'',err:'',vista:'reservas',anio:new Date().getFullYear(),mesF:new Date().getMonth(),resAnio:[],unsubAnio:null,cargandoAnio:false};
 S.mes=new Date(S.mes.getFullYear(),S.mes.getMonth(),1);
 
 /* ===== Datos de ejemplo (solo en la demostración) ===== */
@@ -212,8 +246,9 @@ function datosDemo(){
   var hoy=new Date(),r=[],nombres=["Javier Ortega","Lucía Martín","Carlos Ruiz","Marta Gil","Sergio Pérez","Ana López","David Sanz","Elena Díez","Pablo Ramos","Irene Cuesta","Álvaro Moreno","Nuria Vega"];
   var coches=["Seat León","BMW Serie 3","Volkswagen Golf","Audi A4","Mercedes Clase C","Toyota Corolla","Peugeot 3008","Kia Sportage"];
   var srv=[[SERVICIOS[0],70],[SERVICIOS[1],120],[SERVICIOS[2],180],[SERVICIOS[3],50],[SERVICIOS[1],135],[SERVICIOS[0],80],[SERVICIOS[6],90]];
-  for(var k=-20;k<=9;k++){
+  for(var k=-330;k<=9;k++){
     var d=new Date(hoy);d.setDate(hoy.getDate()+k);if(d.getDay()===0)continue;
+    if(k<-20&&Math.abs(k*13)%5>2)continue;
     var n=(k*7+31)%3===0?2:1;
     for(var j=0;j<n;j++){
       var i=Math.abs(k*3+j*5)%srv.length,h=[9,10,11,12,16,17][Math.abs(k+j*2)%6];
@@ -269,6 +304,16 @@ function escuchar(){
   },function(){S.err='No se pueden leer las reservas. Cierra sesión y vuelve a entrar.';pintar()});
 }
 
+function pararAnio(){if(S.unsubAnio){S.unsubAnio();S.unsubAnio=null}}
+function escucharAnio(){
+  pararAnio();
+  if(S.demo){var a=String(S.anio);S.resAnio=(S.res.length?S.res:datosDemo()).filter(function(r){return r.fecha.slice(0,4)===a});pintar();return}
+  S.cargandoAnio=true;
+  S.unsubAnio=DB.collection('reservas').where('fecha','>=',S.anio+'-01-01').where('fecha','<=',S.anio+'-12-31').onSnapshot(function(q){
+    S.resAnio=[];q.forEach(function(d){var x=d.data();x.id=d.id;S.resAnio.push(x)});S.cargandoAnio=false;pintar();
+  },function(){S.cargandoAnio=false;S.err='No se puede leer la facturación. Cierra sesión y vuelve a entrar.';pintar()});
+}
+
 /* ===== Acciones ===== */
 function buscar(id){return S.res.filter(function(r){return r.id===id})[0]}
 function cambiar(id,datos){
@@ -309,6 +354,7 @@ function pintar(){
     $('#ya').onclick=function(){S.user.reload().then(function(){var u=AUTH.currentUser;if(u&&u.emailVerified){u.getIdToken(true).then(function(){S.modo='panel';escuchar();pintar()})}else{$('#v-ok').textContent='Todavía no está activado. Abre el enlace del email.'}})};
     $('#otra').onclick=function(){S.user.sendEmailVerification().then(function(){$('#v-ok').textContent='Email enviado. Mira también en spam.'}).catch(function(){$('#v-ok').textContent='Espera un minuto antes de pedir otro.'})};
     $('#salir').onclick=salir;return}
+  if(S.vista==='facturacion'){app.innerHTML=vFact();montarFact();return}
   app.innerHTML=vPanel();montarPanel();
 }
 function caja(html){return '<div class="wrap acceso"><div class="caja"><div class="marca"><b>A<i>R</i> DETAIL</b><span>BURGOS</span></div>'+html+'</div></div>'}
@@ -337,7 +383,7 @@ function montarAcceso(){
     AUTH.signInWithEmailAndPassword(em,pw).catch(function(x){S.err=errAuth(x);pintar()});
   };
 }
-function salir(){parar();if(S.demo){S.demo=false;S.res=[];S.modo='acceso';pintar();return}AUTH.signOut()}
+function salir(){parar();pararAnio();S.vista='reservas';if(S.demo){S.demo=false;S.res=[];S.modo='acceso';pintar();return}AUTH.signOut()}
 
 function delMes(){var a=iso(S.mes),f=iso(new Date(S.mes.getFullYear(),S.mes.getMonth()+1,0));return S.res.filter(function(r){return r.fecha>=a&&r.fecha<=f})}
 function vPanel(){
@@ -348,10 +394,7 @@ function vPanel(){
       media=hechas.length?fact/hechas.length:0,
       hoy=iso(new Date()),
       esActual=S.mes.getFullYear()===new Date().getFullYear()&&S.mes.getMonth()===new Date().getMonth();
-  var h='<header class="top"><div class="wrap"><span class="marca"><b>A<i>R</i> DETAIL</b><span>Panel</span></span>'+
-    '<div class="quien"><em>'+esc(S.user.email)+'</em><button class="btn btn-linea btn-mini" id="salir">Salir</button></div></div></header><main class="wrap">';
-  if(S.demo)h+='<div class="demo" role="status"><span><b>Demostración.</b> Son datos de ejemplo: nada de esto es real ni se guarda.</span><button class="btn btn-linea btn-mini" id="fin-demo">Salir de la demo</button></div>';
-  if(S.err)h+='<p class="err" role="alert">'+esc(S.err)+'</p>';
+  var h=cabecera();
   h+='<div class="cabeza"><div><p class="kicker">'+(esActual?'Este mes':'Resumen del mes')+'</p><h1>'+MESES[S.mes.getMonth()]+' '+S.mes.getFullYear()+'</h1></div>'+
     '<div class="mes"><button id="m-ant" aria-label="Mes anterior">‹</button><b>'+MESES[S.mes.getMonth()]+' '+S.mes.getFullYear()+'</b><button id="m-sig" aria-label="Mes siguiente">›</button></div></div>';
   h+='<div class="kpis">'+
@@ -381,6 +424,98 @@ function vPanel(){
   if(actual)h+='</div>';
   return h+'</main>';
 }
+function cabecera(){
+  var h='<header class="top"><div class="wrap"><span class="marca"><b>A<i>R</i> DETAIL</b><span>Panel</span></span>'+
+    '<div class="quien"><em>'+esc(S.user.email)+'</em><button class="btn btn-linea btn-mini" id="salir">Salir</button></div></div></header>'+
+    '<nav class="vistas wrap" aria-label="Secciones"><button class="vista" data-v="reservas" aria-current="'+(S.vista==='reservas'?'page':'false')+'">Reservas</button><button class="vista" data-v="facturacion" aria-current="'+(S.vista==='facturacion'?'page':'false')+'">Facturación</button></nav><main class="wrap">';
+  if(S.demo)h+='<div class="demo" role="status"><span><b>Demostración.</b> Son datos de ejemplo: nada de esto es real ni se guarda.</span><button class="btn btn-linea btn-mini" id="fin-demo">Salir de la demo</button></div>';
+  if(S.err)h+='<p class="err" role="alert">'+esc(S.err)+'</p>';
+  return h;
+}
+function montarCabecera(){
+  $('#salir').onclick=salir;
+  var fd=$('#fin-demo');if(fd)fd.onclick=salir;
+  document.querySelectorAll('.vista').forEach(function(b){b.onclick=function(){
+    if(S.vista===b.dataset.v)return;S.vista=b.dataset.v;
+    if(S.vista==='facturacion')escucharAnio();else pararAnio();
+    pintar();window.scrollTo(0,0);}});
+}
+
+/* ===== Facturación ===== */
+function nombreSrv(r){var s=(r.servicios&&r.servicios[0])||'Otro';return s.replace(/\s*\(.*\)\s*$/,'')||'Otro'}
+function vFact(){
+  var a=S.anio,hoy=new Date(),hechas=S.resAnio.filter(function(r){return r.estado==='hecha'}),
+      porMes=[];for(var m=0;m<12;m++)porMes.push({n:0,t:0});
+  hechas.forEach(function(r){var m=+r.fecha.slice(5,7)-1;porMes[m].n++;porMes[m].t+=(+r.importe||0)});
+  var total=porMes.reduce(function(s,x){return s+x.t},0),trab=hechas.length,
+      mejor=porMes.reduce(function(b,x,i){return x.t>b.t?{t:x.t,i:i}:b},{t:0,i:-1}),
+      mesesCon=porMes.filter(function(x){return x.n}).length;
+  var h=cabecera();
+  h+='<div class="cabeza"><div><p class="kicker">Facturación</p><h1>Año '+a+'</h1></div>'+
+     '<div class="mes"><button id="a-ant" aria-label="Año anterior">‹</button><b>'+a+'</b><button id="a-sig" aria-label="Año siguiente">›</button></div></div>';
+  if(S.cargandoAnio&&!S.resAnio.length)h+='<div class="vacio">Cargando la facturación…</div>';
+  h+='<div class="kpis kf">'+
+    '<div class="kpi grande"><small>Facturado en '+a+'</small><b>'+eur(total)+'</b><span>'+trab+' '+(trab===1?'trabajo cobrado':'trabajos cobrados')+'</span></div>'+
+    '<div class="kpi"><small>Media al mes</small><b>'+(mesesCon?eur(Math.round(total/mesesCon)):'—')+'</b><span>meses con trabajo</span></div>'+
+    '<div class="kpi"><small>Ticket medio</small><b>'+(trab?eur(total/trab):'—')+'</b><span>por trabajo</span></div>'+
+    '<div class="kpi"><small>Mejor mes</small><b>'+(mejor.i>=0?MESES[mejor.i].charAt(0).toUpperCase()+MESES[mejor.i].slice(1,3):'—')+'</b><span>'+(mejor.i>=0?eur(mejor.t):'sin datos')+'</span></div></div>';
+  h+=graficaAnio(porMes);
+  // tabla por meses
+  h+='<section class="bloque"><h2 class="tit">Mes a mes</h2><p class="sub">Toca un mes para ver sus cobros.</p><div class="tabla-x"><table class="t"><thead><tr><th>Mes</th><th class="num">Trabajos</th><th class="num">Facturado</th><th class="num opc">Ticket medio</th><th class="num opc">Vs. mes anterior</th></tr></thead><tbody>';
+  for(var i=0;i<12;i++){
+    var x=porMes[i],futuro=a>hoy.getFullYear()||(a===hoy.getFullYear()&&i>hoy.getMonth());if(futuro)break;
+    var prev=i?porMes[i-1].t:null,dif=(prev&&x.t)?Math.round((x.t-prev)/prev*100):null,enCurso=a===hoy.getFullYear()&&i===hoy.getMonth();
+    h+='<tr class="fila-mes'+(S.mesF===i?' sel':'')+'" data-m="'+i+'" tabindex="0"><td>'+MESES[i].charAt(0).toUpperCase()+MESES[i].slice(1)+'</td><td class="num">'+x.n+'</td><td class="num fuerte">'+eur(x.t)+'</td><td class="num opc">'+(x.n?eur(x.t/x.n):'—')+'</td><td class="num opc">'+(enCurso?'<span class="curso">en curso</span>':dif===null?'—':'<span class="'+(dif>=0?'sube':'baja')+'">'+(dif>=0?'▲ +':'▼ ')+dif+' %</span>')+'</td></tr>';
+  }
+  h+='</tbody><tfoot><tr><td>Total</td><td class="num">'+trab+'</td><td class="num fuerte">'+eur(total)+'</td><td class="num opc">'+(trab?eur(total/trab):'—')+'</td><td class="opc"></td></tr></tfoot></table></div></section>';
+  // por servicio (año)
+  var srv={};hechas.forEach(function(r){var k=nombreSrv(r);srv[k]=srv[k]||{n:0,t:0};srv[k].n++;srv[k].t+=(+r.importe||0)});
+  var lista=Object.keys(srv).map(function(k){return {k:k,n:srv[k].n,t:srv[k].t}}).sort(function(a,b){return b.t-a.t});
+  h+='<section class="bloque"><h2 class="tit">Por servicio</h2><p class="sub">Lo que más te deja en '+a+'.</p>';
+  if(!lista.length)h+='<div class="vacio">Todavía no hay trabajos cobrados este año.</div>';
+  else{h+='<div class="srv">';lista.forEach(function(x){var pc=total?x.t/total*100:0;
+    h+='<div class="srv-f"><div class="srv-n"><b>'+esc(x.k)+'</b><span>'+x.n+' '+(x.n===1?'trabajo':'trabajos')+' · '+Math.round(pc)+' %</span></div><div class="srv-b"><i style="width:'+Math.max(2,pc)+'%"></i></div><div class="srv-t">'+eur(x.t)+'</div></div>';});h+='</div>';}
+  h+='</section>';
+  // cobros del mes seleccionado
+  var m=S.mesF,cob=hechas.filter(function(r){return +r.fecha.slice(5,7)-1===m}).sort(function(a,b){return a.fecha===b.fecha?a.hora-b.hora:(a.fecha<b.fecha?-1:1)});
+  h+='<section class="bloque"><div class="tit-fila"><div><h2 class="tit">Cobros de '+MESES[m]+'</h2><p class="sub">'+cob.length+' '+(cob.length===1?'cobro':'cobros')+' · '+eur(porMes[m].t)+'</p></div>'+
+     '<button class="btn btn-linea btn-mini" id="csv"'+(cob.length?'':' disabled')+'>Descargar Excel</button></div>';
+  if(!cob.length)h+='<div class="vacio">No hay cobros en '+MESES[m]+'.</div>';
+  else{h+='<div class="tabla-x"><table class="t"><thead><tr><th>Día</th><th>Cliente</th><th>Servicio</th><th class="num">Importe</th></tr></thead><tbody>';
+    cob.forEach(function(r){var d=deIso(r.fecha);h+='<tr><td>'+d.getDate()+' '+MESES[d.getMonth()].slice(0,3)+'</td><td>'+esc(r.nombre)+(r.coche?'<small>'+esc(r.coche)+'</small>':'')+'</td><td>'+esc(nombreSrv(r))+'</td><td class="num fuerte">'+eur(+r.importe||0)+'</td></tr>'});
+    h+='</tbody></table></div>';}
+  h+='</section>';
+  return h+'</main>';
+}
+function graficaAnio(porMes){
+  var W=600,H=150,bw=W/12,max=Math.max.apply(null,porMes.map(function(x){return x.t}))||1,tope=Math.ceil(max/500)*500||500,s='';
+  s+='<line x1="0" y1="'+(H-0.5)+'" x2="'+W+'" y2="'+(H-0.5)+'" stroke="rgba(255,255,255,.18)"/>';
+  s+='<line x1="0" y1="'+(H/2)+'" x2="'+W+'" y2="'+(H/2)+'" stroke="rgba(255,255,255,.06)" stroke-dasharray="3 4"/>';
+  porMes.forEach(function(x,i){var bh=x.t?Math.max(3,(H-18)*x.t/tope):0,sel=i===S.mesF;
+    if(bh)s+='<rect class="bm" data-m="'+i+'" x="'+(i*bw+bw*0.16)+'" y="'+(H-bh)+'" width="'+(bw*0.68)+'" height="'+bh+'" rx="3" fill="'+(sel?'#FF4152':'#E3172B')+'" opacity="'+(sel?1:.7)+'"><title>'+MESES[i]+': '+eur(x.t)+'</title></rect>';
+    else s+='<rect x="'+(i*bw+bw*0.16)+'" y="'+(H-2)+'" width="'+(bw*0.68)+'" height="2" fill="rgba(255,255,255,.08)"/>';});
+  var et=porMes.map(function(x,i){return '<span'+(i===S.mesF?' class="on"':'')+'>'+MESES[i].slice(0,3)+'</span>'}).join('');
+  return '<div class="grafica"><h2>Facturado por mes · línea discontinua = '+eur(tope/2)+'</h2><svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none" role="img" aria-label="Facturación por mes">'+s+'</svg><div class="meses12">'+et+'</div></div>';
+}
+function montarFact(){
+  montarCabecera();
+  $('#a-ant').onclick=function(){S.anio--;S.mesF=11;S.resAnio=[];escucharAnio();pintar()};
+  $('#a-sig').onclick=function(){if(S.anio>=new Date().getFullYear())return;S.anio++;S.mesF=S.anio===new Date().getFullYear()?new Date().getMonth():11;S.resAnio=[];escucharAnio();pintar()};
+  document.querySelectorAll('.fila-mes,.bm').forEach(function(el){
+    var go=function(){S.mesF=+el.getAttribute('data-m');pintar();var c=document.getElementById('csv');if(c)c.scrollIntoView({block:'center'})};
+    el.onclick=go;el.onkeydown=function(e){if(e.key==='Enter')go()};});
+  var c=$('#csv');if(c)c.onclick=descargarCSV;
+}
+function descargarCSV(){
+  var m=S.mesF,filas=[['Fecha','Hora','Cliente','Teléfono','Coche','Servicio','Importe (€)']];
+  S.resAnio.filter(function(r){return r.estado==='hecha'&&+r.fecha.slice(5,7)-1===m}).sort(function(a,b){return a.fecha<b.fecha?-1:1}).forEach(function(r){
+    var d=deIso(r.fecha);filas.push([d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear(),r.hora+':00',r.nombre||'',r.tel||'',r.coche||'',(r.servicios||[]).join(' + '),String(+r.importe||0).replace('.',',')]);});
+  var csv='\ufeff'+filas.map(function(f){return f.map(function(c){c=String(c);return /[;"\n]/.test(c)?'"'+c.replace(/"/g,'""')+'"':c}).join(';')}).join('\r\n');
+  var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
+  a.download='AR-Detail-facturacion-'+MESES[m]+'-'+S.anio+'.csv';document.body.appendChild(a);a.click();
+  setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1000);
+}
+
 function vRes(r){
   var acc='';
   if(r.estado==='pendiente')acc+='<button class="btn btn-rojo btn-mini" data-a="confirmar" data-id="'+r.id+'"><svg><use href="#i-wa"/></svg>Confirmar</button>';
@@ -414,8 +549,7 @@ function grafica(hechas){
   return '<div class="grafica"><h2>Facturado por día · máximo '+eur(Math.max.apply(null,v))+'</h2><svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none" role="img" aria-label="Facturación por día del mes">'+s+'</svg><div class="barras"><span>1</span><span>'+Math.ceil(dias/2)+'</span><span>'+dias+'</span></div></div>';
 }
 function montarPanel(){
-  $('#salir').onclick=salir;
-  var fd=$('#fin-demo');if(fd)fd.onclick=salir;
+  montarCabecera();
   $('#m-ant').onclick=function(){S.mes=new Date(S.mes.getFullYear(),S.mes.getMonth()-1,1);escuchar();pintar()};
   $('#m-sig').onclick=function(){S.mes=new Date(S.mes.getFullYear(),S.mes.getMonth()+1,1);escuchar();pintar()};
   document.querySelectorAll('.filtro').forEach(function(b){b.onclick=function(){S.filtro=b.dataset.f;pintar()}});
