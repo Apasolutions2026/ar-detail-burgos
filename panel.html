@@ -53,6 +53,8 @@ h1,h2,h3{font-family:var(--f-display);color:var(--blanco);text-transform:upperca
 .marca b{font-family:var(--f-display);font-weight:900;font-size:20px;letter-spacing:.04em;background:var(--cromo);-webkit-background-clip:text;background-clip:text;color:transparent}
 .marca b i{font-style:normal;color:var(--rojo);-webkit-text-fill-color:var(--rojo)}
 .marca span{font-family:var(--f-display);font-weight:800;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--suave);border-left:1px solid var(--linea);padding-left:10px}
+.marca b{white-space:nowrap}
+@media (max-width:440px){.top .marca span{display:none}.quien{gap:6px}.quien .btn-mini{padding:8px 10px}}
 .quien{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--suave);min-width:0}
 .quien em{font-style:normal;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:22ch}
 @media (max-width:560px){.quien em{display:none}}
@@ -182,6 +184,22 @@ dialog::backdrop{background:rgba(0,0,0,.7)}
 </svg>
 
 <div id="app"></div>
+
+<dialog id="cuenta" aria-labelledby="cuenta-t">
+  <form class="dlg" id="f-cuenta">
+    <header><h2 id="cuenta-t" style="font-size:20px">Cambiar contraseña</h2><button class="cerrar" type="button" aria-label="Cerrar" id="cerrar-c">×</button></header>
+    <p id="c-quien" style="margin:0;color:var(--suave);font-size:14px"></p>
+    <div id="c-campos">
+      <div class="campo"><label for="c-actual">Contraseña actual</label><input id="c-actual" type="password" autocomplete="current-password"></div>
+      <div class="campo"><label for="c-nueva">Contraseña nueva</label><input id="c-nueva" type="password" autocomplete="new-password" minlength="6"></div>
+      <div class="campo"><label for="c-repite">Repite la nueva</label><input id="c-repite" type="password" autocomplete="new-password" minlength="6"></div>
+    </div>
+    <p class="err" id="c-err" role="alert"></p>
+    <p class="ok-msg" id="c-ok" role="status"></p>
+    <button class="btn btn-rojo" type="submit" id="c-guardar" style="width:100%;margin-top:6px">Guardar contraseña nueva</button>
+    <button class="btn btn-linea" type="button" id="c-email" style="width:100%;margin-top:10px">Prefiero que me llegue un email para cambiarla</button>
+  </form>
+</dialog>
 
 <dialog id="nueva" aria-labelledby="nueva-t">
   <form class="dlg" id="f-nueva">
@@ -426,7 +444,7 @@ function vPanel(){
 }
 function cabecera(){
   var h='<header class="top"><div class="wrap"><span class="marca"><b>A<i>R</i> DETAIL</b><span>Panel</span></span>'+
-    '<div class="quien"><em>'+esc(S.user.email)+'</em><button class="btn btn-linea btn-mini" id="salir">Salir</button></div></div></header>'+
+    '<div class="quien"><em>'+esc(S.user.email)+'</em><button class="btn btn-linea btn-mini" id="cuenta-btn">Contraseña</button><button class="btn btn-linea btn-mini" id="salir">Salir</button></div></div></header>'+
     '<nav class="vistas wrap" aria-label="Secciones"><button class="vista" data-v="reservas" aria-current="'+(S.vista==='reservas'?'page':'false')+'">Reservas</button><button class="vista" data-v="facturacion" aria-current="'+(S.vista==='facturacion'?'page':'false')+'">Facturación</button></nav><main class="wrap">';
   if(S.demo)h+='<div class="demo" role="status"><span><b>Demostración.</b> Son datos de ejemplo: nada de esto es real ni se guarda.</span><button class="btn btn-linea btn-mini" id="fin-demo">Salir de la demo</button></div>';
   if(S.err)h+='<p class="err" role="alert">'+esc(S.err)+'</p>';
@@ -434,6 +452,7 @@ function cabecera(){
 }
 function montarCabecera(){
   $('#salir').onclick=salir;
+  $('#cuenta-btn').onclick=abrirCuenta;
   var fd=$('#fin-demo');if(fd)fd.onclick=salir;
   document.querySelectorAll('.vista').forEach(function(b){b.onclick=function(){
     if(S.vista===b.dataset.v)return;S.vista=b.dataset.v;
@@ -556,6 +575,44 @@ function montarPanel(){
   document.querySelectorAll('[data-a]').forEach(function(b){b.onclick=function(){accion(b.dataset.a,b.dataset.id)}});
   $('#nueva-btn').onclick=abrirNueva;
 }
+
+/* ===== Cambiar contraseña ===== */
+var dlgC=$('#cuenta');
+function tienePw(){var u=AUTH&&AUTH.currentUser;return !!(u&&u.providerData.some(function(p){return p.providerId==='password'}))}
+function abrirCuenta(){
+  $('#f-cuenta').reset();$('#c-err').textContent='';$('#c-ok').textContent='';
+  var demo=S.demo,pw=!demo&&tienePw();
+  $('#c-quien').textContent=demo?'En la demostración no se cambia nada. Así es como lo verá el dueño.':pw?'Cuenta: '+S.user.email:'Entras con Google, así que tu contraseña es la de tu cuenta de Google. Si quieres entrar también con email y contraseña, te mandamos un email para crearla.';
+  $('#c-campos').hidden=!demo&&!pw;$('#c-guardar').hidden=!demo&&!pw;
+  dlgC.showModal?dlgC.showModal():dlgC.setAttribute('open','');
+}
+$('#cerrar-c').onclick=function(){dlgC.close()};
+function errPw(e){var c=(e&&e.code)||'';
+  if(/wrong-password|invalid-credential|invalid-login/.test(c))return'La contraseña actual no es correcta.';
+  if(/weak-password/.test(c))return'La contraseña nueva tiene que tener al menos 6 caracteres.';
+  if(/too-many-requests/.test(c))return'Demasiados intentos. Espera unos minutos y vuelve a probar.';
+  if(/requires-recent-login/.test(c))return'Por seguridad, sal y vuelve a entrar, y prueba otra vez.';
+  return'No se ha podido cambiar. Revisa tu conexión y vuelve a probar.';}
+$('#f-cuenta').onsubmit=function(e){
+  e.preventDefault();var err=$('#c-err'),ok=$('#c-ok'),act=$('#c-actual').value,nue=$('#c-nueva').value,rep=$('#c-repite').value;err.textContent='';ok.textContent='';
+  if(!act){err.textContent='Escribe tu contraseña actual.';return}
+  if(nue.length<6){err.textContent='La contraseña nueva tiene que tener al menos 6 caracteres.';return}
+  if(nue!==rep){err.textContent='Las dos contraseñas nuevas no son iguales.';return}
+  if(nue===act){err.textContent='La nueva tiene que ser distinta de la actual.';return}
+  if(S.demo){ok.textContent='En la demostración no se guarda, pero así funciona.';return}
+  var u=AUTH.currentUser,b=$('#c-guardar');b.disabled=true;b.textContent='Guardando…';
+  u.reauthenticateWithCredential(firebase.auth.EmailAuthProvider.credential(u.email,act))
+   .then(function(){return u.updatePassword(nue)})
+   .then(function(){$('#f-cuenta').reset();ok.textContent='Listo. Desde ahora entras con la contraseña nueva.';toast('Contraseña cambiada')})
+   .catch(function(x){err.textContent=errPw(x)})
+   .then(function(){b.disabled=false;b.textContent='Guardar contraseña nueva'});
+};
+$('#c-email').onclick=function(){
+  var err=$('#c-err'),ok=$('#c-ok');err.textContent='';ok.textContent='';
+  if(S.demo){ok.textContent='En la demostración no se envía nada.';return}
+  AUTH.sendPasswordResetEmail(S.user.email).then(function(){ok.textContent='Te hemos enviado un email a '+S.user.email+'. Ábrelo y pon la contraseña nueva. Mira también en spam.'})
+   .catch(function(x){err.textContent=/too-many/.test(x.code||'')?'Espera un minuto antes de pedir otro.':'No se ha podido enviar. Revisa tu conexión.'});
+};
 
 /* ===== Apuntar reserva a mano ===== */
 var dlg=$('#nueva');
