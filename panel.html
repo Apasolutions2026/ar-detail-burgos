@@ -32,6 +32,7 @@
   color-scheme:dark;
 }
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 body{background:var(--negro);color:var(--texto);font-family:var(--f-texto);font-size:16px;line-height:1.5;margin:0}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--negro)}
 .wrap{max-width:980px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
@@ -171,6 +172,7 @@ dialog::backdrop{background:rgba(0,0,0,.7)}
 .meses12{display:grid;grid-template-columns:repeat(12,1fr);text-align:center;font-size:11px;color:var(--suave);text-transform:capitalize}
 .meses12 .on{color:var(--blanco);font-weight:700}
 .bm{cursor:pointer}
+.dom{color:var(--ambar);font-weight:800;text-transform:uppercase;font-size:11px;letter-spacing:.06em}
 .toast{max-width:calc(100% - 32px);text-align:center;border-radius:18px!important;position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--blanco);color:var(--negro);font-weight:700;padding:12px 18px;border-radius:999px;z-index:80;font-size:14px;box-shadow:0 10px 30px rgba(0,0,0,.5)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -216,6 +218,7 @@ dialog::backdrop{background:rgba(0,0,0,.7)}
       <div class="campo"><label for="n-coche">Coche</label><input id="n-coche" maxlength="80" placeholder="Marca y modelo"></div>
       <div class="campo"><label for="n-importe">Importe cobrado (€)</label><input id="n-importe" type="number" inputmode="decimal" min="0" step="0.01" placeholder="Si ya está hecho"></div>
     </div>
+    <div class="campo"><label for="n-dir">Dirección (solo si es a domicilio)</label><input id="n-dir" maxlength="160" autocomplete="off" placeholder="Calle, número, piso y localidad"></div>
     <div class="campo"><label for="n-notas">Notas</label><textarea id="n-notas" maxlength="500" rows="2"></textarea></div>
     <p class="err" id="n-err" role="alert"></p>
     <button class="btn btn-rojo" type="submit" style="width:100%;margin-top:6px">Guardar reserva</button>
@@ -238,7 +241,15 @@ var CFG = {
   messagingSenderId: "214602410215",
   appId: "1:214602410215:web:3e1b8ae29a91ca84b29a42"
 };
-var SERVICIOS = ["Limpieza básica (desde 70 €)","Limpieza premium (desde 120 €)","Limpieza delicada (desde 180 €)","Restaurado de faros (desde 50 € la pareja)","Tratamiento cerámico (desde 320 €)","Limpieza de asientos (desde 25 €/ud.)","Sofás, colchones, sillas o alfombras (mín. 60 €)","Plaza de garaje","Otro"];
+var SERVICIOS = ["Limpieza básica (desde 70 €)","Limpieza premium (desde 120 €)","Limpieza delicada (desde 180 €)","Restaurado de faros (desde 50 € la pareja)","Tratamiento cerámico (desde 320 €)","Limpieza de asientos (desde 25 €/ud.)",
+  "Sillón o butaca · 40 €","Sofá 2 plazas · 70 €","Sofá 3 plazas · 90 €","Sofá 4 plazas · 110 €","Sofá con chaise longue · desde 120 €","Rinconera grande · desde 140 €",
+  "Colchón individual (90 cm) · 50 €","Colchón 135 cm · 65 €","Colchón 150 / 160 cm · 75 €","Colchón 180 / 200 cm · 85 €",
+  "Silla tapizada · 12 €","Pack 4 sillas · 40 €","Pack 6 sillas · 55 €","Alfombra (por m²) · desde 10 €","Moqueta (por m²) · desde 6 €",
+  "Pack sofá 3 plazas + colchón de matrimonio · 140 €","Pack sofá 3 plazas + 6 sillas · 130 €","Otro textil · presupuesto a medida","Plaza de garaje","Otro"];
+/* Precio orientativo a partir de las líneas guardadas ("desde 70 €", "· 90 €") */
+function estimado(r){var t=0;(r.servicios||[]).forEach(function(l){var m=String(l).match(/(?:·|\(desde|desde)\s*(?:desde\s*)?(\d+(?:[.,]\d+)?)\s*€/);if(m)t+=parseFloat(m[1].replace(',','.'))});
+  if(r.dir&&t&&t<60)t=60;return t}
+function esTextil(l){return / · /.test(String(l))||/^Otro textil/.test(String(l))}
 var HORAS = [8,9,10,11,12,13,14,15,16,17,18,19];
 
 var AUTH=null, DB=null;
@@ -263,7 +274,7 @@ S.mes=new Date(S.mes.getFullYear(),S.mes.getMonth(),1);
 function datosDemo(){
   var hoy=new Date(),r=[],nombres=["Javier Ortega","Lucía Martín","Carlos Ruiz","Marta Gil","Sergio Pérez","Ana López","David Sanz","Elena Díez","Pablo Ramos","Irene Cuesta","Álvaro Moreno","Nuria Vega"];
   var coches=["Seat León","BMW Serie 3","Volkswagen Golf","Audi A4","Mercedes Clase C","Toyota Corolla","Peugeot 3008","Kia Sportage"];
-  var srv=[[SERVICIOS[0],70],[SERVICIOS[1],120],[SERVICIOS[2],180],[SERVICIOS[3],50],[SERVICIOS[1],135],[SERVICIOS[0],80],[SERVICIOS[6],90]];
+  var srv=[[SERVICIOS[0],70],[SERVICIOS[1],120],[SERVICIOS[2],180],[SERVICIOS[3],50],[SERVICIOS[1],135],[SERVICIOS[0],80],[['Sofá 3 plazas · 90 €','Colchón 150 / 160 cm · 75 €'],165]];
   for(var k=-330;k<=9;k++){
     var d=new Date(hoy);d.setDate(hoy.getDate()+k);if(d.getDay()===0)continue;
     if(k<-20&&Math.abs(k*13)%5>2)continue;
@@ -272,7 +283,7 @@ function datosDemo(){
       var i=Math.abs(k*3+j*5)%srv.length,h=[9,10,11,12,16,17][Math.abs(k+j*2)%6];
       var est=k<0?((k+j)%9===0?'cancelada':'hecha'):k===0?(j?'confirmada':'hecha'):(k%3===0?'confirmada':'pendiente');
       r.push({id:'demo'+k+'_'+j,fecha:iso(d),hora:h,nombre:nombres[Math.abs(k+j*4)%nombres.length],tel:'6'+String(10000000+Math.abs(k*7919+j*104729)%89999999),
-        servicios:[srv[i][0]],coche:i===6?'':coches[Math.abs(k+j)%coches.length],dir:i===6?'C/ Vitoria 120, Burgos':'',notas:k%4===0?'Tiene perro, pelos en el maletero':'',
+        servicios:[].concat(srv[i][0]),coche:i===6?'':coches[Math.abs(k+j)%coches.length],dir:i===6?'C/ Vitoria 120, Burgos':'',notas:k%4===0?'Tiene perro, pelos en el maletero':'',
         estado:est,importe:est==='hecha'?srv[i][1]:null,origen:k%5===0?'panel':'web'});
     }
   }
@@ -346,7 +357,9 @@ function liberarHora(r){
 function accion(a,id){
   var r=buscar(id);if(!r)return;
   if(a==='confirmar'){
-    var txt='Hola '+r.nombre.split(' ')[0]+', te confirmamos tu cita en AR Detail el '+DIAS[deIso(r.fecha).getDay()]+' '+deIso(r.fecha).getDate()+' de '+MESES[deIso(r.fecha).getMonth()]+' a las '+r.hora+':00. Estamos en C/ Alfoz de Bricia 18, Nave 13 (Burgos). ¡Te esperamos!';
+    var cuandoC=DIAS[deIso(r.fecha).getDay()]+' '+deIso(r.fecha).getDate()+' de '+MESES[deIso(r.fecha).getMonth()]+' a las '+r.hora+':00';
+    var txt=r.dir?'Hola '+r.nombre.split(' ')[0]+', te confirmamos la limpieza a domicilio de AR Detail el '+cuandoC+' en '+r.dir+'. Si cambia algo, escríbenos por aquí. ¡Hasta entonces!'
+      :'Hola '+r.nombre.split(' ')[0]+', te confirmamos tu cita en AR Detail el '+cuandoC+'. Estamos en C/ Alfoz de Bricia 18, Nave 13 (Burgos). ¡Te esperamos!';
     window.open('https://wa.me/'+telWa(r.tel)+'?text='+encodeURIComponent(txt),'_blank','noopener');
     cambiar(id,{estado:'confirmada'}).then(function(){toast('Reserva confirmada')});
   }else if(a==='cobrar'){S.cobrando=id;pintar();var i=$('#imp-'+id);if(i)i.focus()}
@@ -468,7 +481,7 @@ function montarCabecera(){
 }
 
 /* ===== Facturación ===== */
-function nombreSrv(r){var s=(r.servicios&&r.servicios[0])||'Otro';return s.replace(/\s*\(.*\)\s*$/,'')||'Otro'}
+function nombreSrv(r){var s=(r.servicios&&r.servicios[0])||'Otro';if(esTextil(s)||r.dir)return 'Sofás y textiles a domicilio';return s.replace(/\s*\(.*\)\s*$/,'')||'Otro'}
 function vFact(){
   var a=S.anio,hoy=new Date(),hechas=S.resAnio.filter(function(r){return r.estado==='hecha'}),
       porMes=[];for(var m=0;m<12;m++)porMes.push({n:0,t:0});
@@ -546,7 +559,7 @@ function vRes(r){
   var acc='';
   if(r.estado==='pendiente')acc+='<button class="btn btn-rojo btn-mini" data-a="confirmar" data-id="'+r.id+'"><svg><use href="#i-wa"/></svg>Confirmar</button>';
   if((r.estado==='pendiente'||r.estado==='confirmada')){
-    if(S.cobrando===r.id)acc+='<div class="cobrar"><input id="imp-'+r.id+'" type="number" inputmode="decimal" min="0" step="0.01" placeholder="€" aria-label="Importe cobrado en euros"><button class="btn btn-blanco btn-mini" data-a="guardarcobro" data-id="'+r.id+'">OK</button><button class="btn btn-linea btn-mini" data-a="nocobrar" data-id="'+r.id+'">×</button></div>';
+    if(S.cobrando===r.id)acc+='<div class="cobrar"><input id="imp-'+r.id+'" type="number" inputmode="decimal" min="0" step="0.01" placeholder="€" value="'+(estimado(r)||'')+'" aria-label="Importe cobrado en euros"><button class="btn btn-blanco btn-mini" data-a="guardarcobro" data-id="'+r.id+'">OK</button><button class="btn btn-linea btn-mini" data-a="nocobrar" data-id="'+r.id+'">×</button></div>';
     else acc+='<button class="btn btn-linea btn-mini" data-a="cobrar" data-id="'+r.id+'">Hecho y cobrado</button>';
     acc+=S.armado===r.id?'<span style="display:flex;gap:6px"><button class="btn btn-mini" style="background:var(--rojo)" data-a="cancelar" data-id="'+r.id+'">'+(r.tel?'Sí, cancelar y avisar por WhatsApp':'Sí, cancelar')+'</button><button class="btn btn-linea btn-mini" data-a="nocancelar" data-id="'+r.id+'">No</button></span>':'<button class="link" style="font-size:13px" data-a="cancelar" data-id="'+r.id+'">Cancelar cita</button>';
   }
@@ -556,10 +569,11 @@ function vRes(r){
   var det=[];
   if(r.tel)det.push('<a href="https://wa.me/'+telWa(r.tel)+'" target="_blank" rel="noopener">'+esc(r.tel)+'</a>');
   if(r.coche)det.push(esc(r.coche));
-  if(r.dir)det.push('A domicilio: '+esc(r.dir));
+  if(r.dir)det.push('<b class="dom">A domicilio</b> '+esc(r.dir));
+  var est=estimado(r);if(est&&r.estado!=='hecha'&&r.estado!=='cancelada')det.push('orientativo '+eur(est));
   if(r.origen==='panel')det.push('apuntada por ti');
   return '<div class="res '+r.estado+'"><div class="h">'+r.hora+':00</div><div class="info"><div class="n">'+esc(r.nombre)+' <span class="chip '+r.estado+'">'+r.estado+'</span></div>'+
-    '<div class="s">'+esc((r.servicios||[]).join(' · '))+'</div><div class="d">'+det.join(' · ')+'</div>'+(r.notas?'<div class="d">“'+esc(r.notas)+'”</div>':'')+'</div><div class="acc">'+acc+'</div></div>';
+    '<div class="s">'+(r.servicios||[]).map(esc).join('<br>')+'</div><div class="d">'+det.join(' · ')+'</div>'+(r.notas?'<div class="d">“'+esc(r.notas)+'”</div>':'')+'</div><div class="acc">'+acc+'</div></div>';
 }
 function grafica(hechas){
   var dias=new Date(S.mes.getFullYear(),S.mes.getMonth()+1,0).getDate(),v=[];for(var i=0;i<dias;i++)v.push(0);
@@ -631,7 +645,7 @@ $('#f-nueva').onsubmit=function(e){
   e.preventDefault();var err=$('#n-err');err.textContent='';
   var f=$('#n-fecha').value,h=+$('#n-hora').value,nom=$('#n-nombre').value.trim(),imp=$('#n-importe').value;
   if(!f||!nom){err.textContent='Pon el día y el nombre del cliente.';return}
-  var r={servicios:[$('#n-srv').value],fecha:f,hora:h,nombre:nom.slice(0,80),tel:$('#n-tel').value.trim().slice(0,20),coche:$('#n-coche').value.trim().slice(0,80),dir:'',notas:$('#n-notas').value.trim().slice(0,500),
+  var r={servicios:[$('#n-srv').value],fecha:f,hora:h,nombre:nom.slice(0,80),tel:$('#n-tel').value.trim().slice(0,20),coche:$('#n-coche').value.trim().slice(0,80),dir:($('#n-dir')?$('#n-dir').value.trim().slice(0,160):''),notas:$('#n-notas').value.trim().slice(0,500),
     estado:imp!==''?'hecha':'confirmada',importe:imp!==''?Math.round(parseFloat(imp.replace(',','.'))*100)/100:null,origen:'panel'};
   if(S.demo){r.id='demo'+Date.now();S.res.push(r);dlg.close();pintar();toast('Reserva apuntada');return}
   var ref=DB.collection('reservas').doc(),oc=DB.collection('ocupado').doc(f+'_'+h);
